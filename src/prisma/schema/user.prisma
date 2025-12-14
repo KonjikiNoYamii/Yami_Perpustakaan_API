@@ -1,0 +1,12 @@
+model User {
+  id        String   @id @default(uuid())
+  nama      String
+  email     String   @unique
+  kota      String
+
+  loans     Loan[]   // 1 User -> Banyak Loan
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+}

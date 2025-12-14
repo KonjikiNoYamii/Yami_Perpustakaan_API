@@ -4,8 +4,10 @@ import morgan from "morgan";
 import cors from "cors";
 import { successResponse } from "./utils/response";
 import { errorHandler } from "./middlewares/error.handler";
-import booksRouter from "./routes/perpustakaan.route"
-import userRouter from "./routes/peminjam.route"
+import booksRouter from "./routes/book.route"
+import userRouter from "./routes/user.route"
+import categoryRouter from './routes/category.route'
+import loanRouter from './routes/loan.route'
 import { requestLogger } from "./middlewares/logger.middleware";
 import { apiKeyValidator } from "./middlewares/apiKey.middleware";
 
@@ -33,6 +35,10 @@ app.get("/", (req: Request, res: Response) => {
 app.use('/api/books',booksRouter)
 
 app.use('/api/users', userRouter)
+
+app.use('/api/category',categoryRouter)
+
+app.use('/api/loan',loanRouter)
 
 app.use(/.*/, (req: Request, _res: Response) => {
   throw new Error(`Route ${req.originalUrl} tidak ada di API`);

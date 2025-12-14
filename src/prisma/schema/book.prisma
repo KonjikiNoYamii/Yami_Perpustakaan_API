@@ -1,0 +1,16 @@
+model Book {
+  id          String   @id @default(uuid())
+  nama        String
+  harga       Int
+  deskripsi   String
+  stok        Int
+
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+
+  loans       Loan[]   // 1 Book -> Banyak Loan
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+}
