@@ -11,5 +11,5 @@ export const getLoanItemById = async (id: string) => {
     throw new Error("Loan item tidak ditemukan")
   }
 
-  return item
+  return item 
 }
