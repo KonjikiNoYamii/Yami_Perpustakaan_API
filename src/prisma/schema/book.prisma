@@ -4,11 +4,12 @@ model Book {
   harga       Int
   deskripsi   String
   stok        Int
+  coverUrl    String?
 
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
 
-  loans       Loan[]   // 1 Book -> Banyak Loan
+  loanItems   LoanItem[] // ⬅️ RELASI MANY-TO-MANY
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

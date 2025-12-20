@@ -2,9 +2,11 @@ model User {
   id        String   @id @default(uuid())
   nama      String
   email     String   @unique
+  password  String
   kota      String
+  role      String   @default("MEMBER") 
 
-  loans     Loan[]   // 1 User -> Banyak Loan
+  loans     Loan[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

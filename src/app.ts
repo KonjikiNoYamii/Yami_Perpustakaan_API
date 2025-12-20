@@ -8,8 +8,10 @@ import booksRouter from "./routes/book.route"
 import userRouter from "./routes/user.route"
 import categoryRouter from './routes/category.route'
 import loanRouter from './routes/loan.route'
+import loanItemRouter from './routes/loanItem.route'
+import authRouter from './routes/auth.route'
+import adminRouter from './routes/admin.route'
 import { requestLogger } from "./middlewares/logger.middleware";
-import { apiKeyValidator } from "./middlewares/apiKey.middleware";
 
 
 const app: Application = Express()
@@ -18,10 +20,10 @@ app.use(helmet())
 app.use(morgan("dev"))
 app.use(cors())
 app.use(Express.json());
+app.set('query parser', 'extended')
+app.use(Express.static("public"))
 
 app.use(requestLogger);
-
-app.use(apiKeyValidator);
 
 app.get("/", (req: Request, res: Response) => {
   const waktuProses = Date.now() - (req.startTime || Date.now());
@@ -32,6 +34,10 @@ app.get("/", (req: Request, res: Response) => {
   }, null, 200)
 });
 
+app.use('/api/auth',authRouter)
+
+app.use('/api/admin',adminRouter)
+
 app.use('/api/books',booksRouter)
 
 app.use('/api/users', userRouter)
@@ -39,6 +45,9 @@ app.use('/api/users', userRouter)
 app.use('/api/category',categoryRouter)
 
 app.use('/api/loan',loanRouter)
+
+app.use('/api/loanItem',loanItemRouter)
+
 
 app.use(/.*/, (req: Request, _res: Response) => {
   throw new Error(`Route ${req.originalUrl} tidak ada di API`);

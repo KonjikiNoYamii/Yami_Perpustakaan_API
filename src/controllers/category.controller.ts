@@ -1,106 +1,115 @@
-import type { Request, Response } from "express";
-import {
-  getAllCategories,
-  getCategoryById,
-  createCategory,
-  updateCategory,
-  deleteCategory,
-  searchCategory,
-} from "../services/category.service";
-import { successResponse } from "../utils/response";
+import type { Request, Response } from "express"
+import * as categoryService from "../services/category.service"
+import { successResponse } from "../utils/response"
 
-export const getAll = async (_req: Request, res: Response) => {
-  const { categories, total } = await getAllCategories();
+// ===============================
+// GET ALL (PUBLIC)
+// ===============================
+export const getCategories = async (
+  _req: Request,
+  res: Response
+) => {
+  const categories = await categoryService.getAllCategories()
 
   successResponse(
     res,
-    "Category berhasil diambil!",
-    {
-      jumlah: total,
-      data: categories,
-    },
+    "Category berhasil diambil",
+    categories,
     null,
     200
-  );
-};
-export const search = async (req: Request, res: Response) => {
-  const { nama } = req.query;
+  )
+}
 
-  const categories = await searchCategory(nama?.toString());
-
-  successResponse(res, "Kategori ditemukan", categories);
-};
-
-export const getById = async (req: Request, res: Response) => {
+// ===============================
+// GET BY ID
+// ===============================
+export const getCategory = async (
+  req: Request,
+  res: Response
+) => {
   if (!req.params.id) {
-    throw new Error("ID tidak ditemukan!");
+    throw new Error("ID tidak ditemukan!")
   }
-
-  const category = await getCategoryById(req.params.id);
+  const category = await categoryService.getCategoryById(
+    req.params.id
+  )
 
   successResponse(
     res,
-    "Detail category berhasil diambil!",
+    "Detail category",
     category,
     null,
     200
-  );
-};
+  )
+}
 
-// export const search = async (req: Request, res: Response) => {
-//   const { name } = req.query;
+// ===============================
+// CREATE (ADMIN)
+// ===============================
+export const createCategory = async (
+  req: Request,
+  res: Response
+) => {
+  const { nama } = req.body
 
-//   const result = await searchCategory(name?.toString());
+  if (!nama) {
+    throw new Error("Nama category wajib diisi")
+  }
 
-//   successResponse(
-//     res,
-//     "Category ditemukan!",
-//     result,
-//     null,
-//     200
-//   );
-// };
-
-export const create = async (req: Request, res: Response) => {
-  const category = await createCategory(req.body.name);
+  const category = await categoryService.createCategory(nama)
 
   successResponse(
     res,
-    "Category berhasil dibuat!",
+    "Category berhasil dibuat",
     category,
     null,
     201
-  );
-};
+  )
+}
 
-export const update = async (req: Request, res: Response) => {
+// ===============================
+// UPDATE (ADMIN)
+// ===============================
+export const updateCategory = async (
+  req: Request,
+  res: Response
+) => {
   if (!req.params.id) {
-    throw new Error("ID tidak ditemukan!");
+    throw new Error("ID tidak ditemukan!")
   }
-
-  const updated = await updateCategory(req.params.id, req.body.name);
+  const category = await categoryService.updateCategory(
+    req.params.id,
+    req.body.nama
+  )
 
   successResponse(
     res,
-    "Category berhasil diupdate!",
-    updated,
+    "Category berhasil diupdate",
+    category,
     null,
     200
-  );
-};
+  )
+}
 
-export const deleted = async (req: Request, res: Response) => {
+// ===============================
+// DELETE (ADMIN)
+// ===============================
+export const deleteCategory = async (
+  req: Request,
+  res: Response
+) => {
   if (!req.params.id) {
-    throw new Error("ID tidak ditemukan!");
+    throw new Error("ID tidak ditemukan!")
   }
-
-  const removed = await deleteCategory(req.params.id);
+  const category = await categoryService.deleteCategory(
+    req.params.id
+  )
 
   successResponse(
     res,
-    "Category berhasil dihapus!",
-    removed,
+    "Category berhasil dihapus",
+    category,
     null,
     200
-  );
-};
+  )
+}

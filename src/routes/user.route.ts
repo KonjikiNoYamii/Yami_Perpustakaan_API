@@ -1,20 +1,23 @@
-import { Router } from "express";
-import { create, deleted, getAll, getByid, search, update } from "../controllers/user.controller";
-import { createUserValidation, getUserByIdValidation, updateUserValidation } from "../middlewares/user.validation";
-import { validate } from "../utils/validation";
+import { Router } from "express"
+import * as userController from "../controllers/user.controller"
+import { authenticate, adminOnly } from "../middlewares/auth.middleware"
+import { validate } from "../utils/validation"
+import { userIdValidation } from "../validations/user.validation"
 
 const router = Router()
 
-router.get('/', getAll)
+// MEMBER & ADMIN
+router.get("/me", authenticate, userController.getMe)
 
-router.get('/search', search)
+// ADMIN ONLY
+router.get("/", authenticate, adminOnly, userController.getUsers)
 
-router.get('/:id',validate(getUserByIdValidation),getByid)
-
-router.post('/', validate(createUserValidation),create)
-
-router.put('/:id',validate(updateUserValidation), update)
-
-router.delete('/:id', deleted)
+router.delete(
+  "/:id",
+  authenticate,
+  adminOnly,
+  validate(userIdValidation),
+  userController.deleteUser
+)
 
 export default router

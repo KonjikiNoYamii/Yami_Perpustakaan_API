@@ -1,0 +1,1 @@
+{"version":3,"file":"loan.controller.d.ts","sourceRoot":"","sources":["../../src/controllers/loan.controller.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAA;AAOhD,eAAO,MAAM,QAAQ,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,kBAiBzD,CAAA;AAKD,eAAO,MAAM,WAAW,GAAU,MAAM,OAAO,EAAE,KAAK,QAAQ,kBAU7D,CAAA;AAKD,eAAO,MAAM,UAAU,GAAU,KAAK,OAAO,EAAE,KAAK,QAAQ,kBAa3D,CAAA"}

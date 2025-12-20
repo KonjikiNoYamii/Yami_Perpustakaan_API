@@ -1,0 +1,11 @@
+model LoanItem {
+  id       String @id @default(uuid())
+
+  loanId   String
+  loan     Loan   @relation(fields: [loanId], references: [id])
+
+  bookId   String
+  book     Book   @relation(fields: [bookId], references: [id])
+
+  qty      Int
+}

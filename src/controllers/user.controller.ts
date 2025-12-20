@@ -1,91 +1,29 @@
 import type { Request, Response } from "express"
-import { createUser, deleteUser, getAllUsers, getUserById, searchUser, updateUser } from "../services/user.service"
+import * as userService from "../services/user.service"
 import { successResponse } from "../utils/response"
 
-export const getAll = async(_req:Request, res:Response) =>{
-    const {users, total} = await getAllUsers()
+export const getMe = async (req: Request, res: Response) => {
+  if (!req.user?.id) throw new Error("Unauthorized")
 
-    successResponse(
-        res,
-        "User berhasil diambil!",
-        {
-            jumlah:total,
-            user:users
-        }
-    )
+  const user = await userService.getUserById(req.user.id)
+
+  return successResponse(res, "User ditemukan", user, null, 200)
 }
 
-export const search = async (req: Request, res: Response) => {
-    const {nama, email, kota} = req.query
+export const getUsers = async (req: Request, res: Response) => {
+  const page = Number(req.query.page) || 1
+  const limit = Number(req.query.limit) || 10
 
-    const result = await searchUser(
-        nama?.toString(), email?.toString(), kota?.toString()
-    )
+  const result = await userService.getAllUsers(page, limit)
 
-    successResponse(
-        res,
-        "User ditemukan!",
-        result,
-        null,
-        200
-    )
-};
+  return successResponse(res, "Daftar user", result, null, 200)
+}
 
-export const getByid = async (req:Request, res:Response) =>{
+export const deleteUser = async (req: Request, res: Response) => {
     if (!req.params.id) {
         throw new Error("ID tidak ditemukan!")
     }
+  const user = await userService.deleteUser(req.params.id)
 
-    const user = await getUserById(req.params.id)
-    
-    successResponse(
-        res,
-        "User berhasil diambil!",
-        user,
-        null,
-        200
-    )
-}
-
-export const create = async (req:Request, res:Response) =>{
-    const newUser = await createUser(req.body)
-    successResponse(
-        res,
-        "User berhasil dibuat!",
-        newUser,
-        null,
-        201
-    )
-}
-
-export const update = async (req:Request, res:Response) =>{
-    if (!req.params.id) {
-        throw new Error("ID tidak ditemukan!")
-    }
-
-    const user = await updateUser(req.params.id, req.body)
-
-    successResponse(
-        res,
-        "User berhasil di update!",
-        user,
-        null,
-        201
-    )
-}
-
-export const deleted = async (req:Request, res:Response) =>{
-    if (!req.params.id) {
-        throw new Error("ID tidak ditemukan!")
-    }
-
-    const deleted = await deleteUser(req.params.id)
-
-    successResponse(
-        res,
-        "User berhasil dihapus!",
-        deleted,
-        null,
-        200
-    )
+  return successResponse(res, "User dihapus", user, null, 200)
 }

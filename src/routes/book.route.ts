@@ -1,20 +1,41 @@
-import { Router } from "express";
-import { create, deleted, getAll, getById, search, update } from "../controllers/book.controller";
-import { createBookValidation, getBookByIdValidation, updateBookValidation } from "../middlewares/book.validation";
-import { validate } from "../utils/validation";
+import { Router } from "express"
+import * as bookControl from "../controllers/book.controller"
+import { authenticate, adminOnly } from "../middlewares/auth.middleware"
+import { validate } from "../utils/validation"
+import { createBookValidation, getBookByIdValidation, updateBookValidation } from "../validations/book.validation"
 
 const router = Router()
 
-router.get('/', getAll)
+// PUBLIC
+router.get("/", bookControl.getBooks)
+router.get(
+  "/:id",
+  validate(getBookByIdValidation),
+  bookControl.getBooks
+)
 
-router.get('/search', search)
+// ADMIN ONLY
+router.post(
+  "/",
+  authenticate,
+  adminOnly,
+  validate(createBookValidation),
+  bookControl.createBook
+)
 
-router.get('/:id', validate(getBookByIdValidation),getById)
+router.put(
+  "/:id",
+  authenticate,
+  adminOnly,
+  validate(updateBookValidation),
+  bookControl.updateBook
+)
 
-router.post('/', validate(createBookValidation),create)
-
-router.put('/:id', validate(updateBookValidation),update)
-
-router.delete('/:id', deleted)
+router.delete(
+  "/:id",
+  authenticate,
+  adminOnly,
+  bookControl.deleteBook
+)
 
 export default router

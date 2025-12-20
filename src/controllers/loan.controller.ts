@@ -1,48 +1,58 @@
-import type { Request, Response } from "express";
-import * as service from "../services/loan.service";
-import { successResponse } from "../utils/response";
+import type { Request, Response } from "express"
+import * as loanService from "../services/loan.service"
+import { successResponse } from "../utils/response"
 
-export const getAll = async (_: Request, res: Response) => {
-  const data = await service.getAllLoans();
-  successResponse(res, "Loan diambil", data);
-};
+// ===============================
+// CHECKOUT
+// ===============================
+export const checkout = async (req: Request, res: Response) => {
+  if (!req.user?.id) {
+    throw new Error("User tidak terautentikasi")
+  }
 
-export const search = async (req: Request, res: Response) => {
-  const { userId, bookId } = req.query;
+  const result = await loanService.checkoutLoan(
+    req.body,
+    req.user.id
+  )
 
-  const loans = await service.searchLoan(
-    userId?.toString(),
-    bookId?.toString()
-  );
+  successResponse(
+    res,
+    "Peminjaman berhasil",
+    result,
+    null,
+    201
+  )
+}
 
-  successResponse(res, "Loan ditemukan", loans);
-};
+// ===============================
+// GET ALL LOAN (ADMIN)
+// ===============================
+export const getAllLoans = async (_req: Request, res: Response) => {
+  const loans = await loanService.getAllLoans()
 
-export const getById = async (req: Request, res: Response) => {
-    if (!req.params.id) {
-        throw new Error("Parammter tidak ditemukan !!")
-    }
-  const loan = await service.getLoanById(req.params.id);
-  successResponse(res, "Detail loan", loan);
-};
+  successResponse(
+    res,
+    "Data loan berhasil diambil",
+    loans,
+    null,
+    200
+  )
+}
 
-export const create = async (req: Request, res: Response) => {
-  const loan = await service.createLoan(req.body);
-  successResponse(res, "Loan dibuat", loan, null, 201);
-};
+// ===============================
+// RETURN LOAN
+// ===============================
+export const returnLoan = async (req: Request, res: Response) => {
+  if (!req.params.id) {
+    throw new Error("ID tidak ditemukan!")
+  }
+  const result = await loanService.returnLoan(req.params.id)
 
-export const update = async (req: Request, res: Response) => {
-    if (!req.params.id) {
-        throw new Error("Parammter tidak ditemukan !!")
-    }
-  const loan = await service.updateLoan(req.params.id, req.body);
-  successResponse(res, "Loan diupdate", loan);
-};
-
-export const deleted = async (req: Request, res: Response) => {
-    if (!req.params.id) {
-        throw new Error("Parammter tidak ditemukan !!")
-    }
-  const loan = await service.deleteLoan(req.params.id);
-  successResponse(res, "Loan dihapus", loan);
-};
+  successResponse(
+    res,
+    "Buku berhasil dikembalikan",
+    result,
+    null,
+    200
+  )
+}

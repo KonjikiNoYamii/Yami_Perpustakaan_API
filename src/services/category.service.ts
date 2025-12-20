@@ -1,48 +1,36 @@
-import { getPrisma } from "../prisma";
-const prisma = getPrisma();
+import * as categoryRepo from "../repositories/category.repository"
 
 export const getAllCategories = async () => {
-  const categories = await prisma.category.findMany({
-    where: { deletedAt: null },
-  });
-  return { categories, total: categories.length };
-};
+  return categoryRepo.findAll()
+}
 
 export const getCategoryById = async (id: string) => {
-  return prisma.category.findUnique({ where: { id, deletedAt:null } });
-};
+  const category = await categoryRepo.findById(id)
+
+  if (!category) {
+    throw new Error("Category tidak ditemukan")
+  }
+
+  return category
+}
 
 export const createCategory = async (nama: string) => {
-  return prisma.category.create({
-    data: { nama },
-  });
-};
+  const existing = await categoryRepo.findByName(nama)
 
-export const updateCategory = async (id: string, nama: string) => {
-  return prisma.category.update({
-    where: { id, deletedAt:null },
-    data: { nama },
-  });
-};
+  if (existing) {
+    throw new Error("Category sudah ada")
+  }
+
+  return categoryRepo.create({ nama })
+}
+
+export const updateCategory = async (
+  id: string,
+  nama: string
+) => {
+  return categoryRepo.update(id, { nama })
+}
 
 export const deleteCategory = async (id: string) => {
-  return prisma.category.update({
-    where: { id, deletedAt:null },
-    data: { deletedAt: new Date() },
-  });
-};
-
-export const searchCategory = async (nama?: string) => {
-  return prisma.category.findMany({
-    where: {
-      deletedAt: null,
-      ...(nama && {
-        nama: {
-          contains: nama,
-          mode: "insensitive",
-        },
-      }),
-    },
-  });
-};
-
+  return categoryRepo.softDelete(id)
+}
