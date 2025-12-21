@@ -3,6 +3,7 @@ import * as bookControl from "../controllers/book.controller"
 import { authenticate, adminOnly } from "../middlewares/auth.middleware"
 import { validate } from "../utils/validation"
 import { createBookValidation, getBookByIdValidation, updateBookValidation } from "../validations/book.validation"
+import { upload } from "../middlewares/upload.middleware"
 
 const router = Router()
 
@@ -20,6 +21,7 @@ router.post(
   authenticate,
   adminOnly,
   validate(createBookValidation),
+  upload.single("coverUrl"),
   bookControl.createBook
 )
 
