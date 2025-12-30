@@ -1,8 +1,6 @@
-import type { Book, Prisma, PrismaClient } from "../generated";
+import type { Book, Prisma, PrismaClient } from "../../dist/generated";
 
-
-
-export class BookRepository{
+export class BookRepository {
   constructor(private prisma: PrismaClient) {}
 
   findAll = async (
@@ -42,13 +40,13 @@ export class BookRepository{
   create = async (data: Prisma.BookCreateInput) => {
     return this.prisma.book.create({
       data,
-      include:{
-        category:true
-      }
+      include: {
+        category: true,
+      },
     });
   };
 
-  update = async(id: string, data: Prisma.BookUpdateInput) => {
+  update = async (id: string, data: Prisma.BookUpdateInput) => {
     return this.prisma.book.update({
       where: {
         id,
@@ -76,26 +74,23 @@ export class BookRepository{
     });
   };
 
-  getStats = async () =>{
+  getStats = async () => {
     return await this.prisma.book.aggregate({
-        _count:{id:true},
-        _avg:{harga:true},
-        _sum:{stok:true},
-        _min:{harga:true},
-        _max:{harga:true}
-    })
-  }
-  
-  getBookByCategoryIdAndPublicationYear = async () =>{
+      _count: { id: true },
+      _avg: { harga: true },
+      _sum: { stok: true },
+      _min: { harga: true },
+      _max: { harga: true },
+    });
+  };
+
+  getBookByCategoryIdAndPublicationYear = async () => {
     return await this.prisma.book.groupBy({
-      by:['categoryId', 'tahunTerbit'],
-      _count:{id:true},
-      _avg:{harga:true},
-      _sum:{stok:true},
-      orderBy:[
-       { categoryId:'asc'},
-        {tahunTerbit:'asc'}]
-      
-    })
-  }
+      by: ["categoryId", "tahunTerbit"],
+      _count: { id: true },
+      _avg: { harga: true },
+      _sum: { stok: true },
+      orderBy: [{ categoryId: "asc" }, { tahunTerbit: "asc" }],
+    });
+  };
 }

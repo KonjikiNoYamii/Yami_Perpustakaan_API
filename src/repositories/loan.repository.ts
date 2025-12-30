@@ -1,4 +1,11 @@
-import type { Prisma, PrismaClient, Loan, User, LoanItem, Book } from "../generated";
+import type {
+  Prisma,
+  PrismaClient,
+  Loan,
+  User,
+  LoanItem,
+  Book,
+} from "../../dist/generated";
 
 export type LoanWithItems = Loan & {
   user: User;
@@ -39,12 +46,9 @@ export interface ILoanRepository {
 
   countAll(where: Prisma.LoanWhereInput): Promise<number>;
 
-findById(id: string): Promise<LoanWithItems | null>;
+  findById(id: string): Promise<LoanWithItems | null>;
 
-  returnLoan(
-    id: string,
-    tx: Prisma.TransactionClient
-  ): Promise<Loan>;
+  returnLoan(id: string, tx: Prisma.TransactionClient): Promise<Loan>;
 }
 
 export class LoanRepository implements ILoanRepository {
@@ -64,7 +68,11 @@ export class LoanRepository implements ILoanRepository {
     });
   }
 
-  async decrementStock(bookId: string, qty: number, tx: Prisma.TransactionClient) {
+  async decrementStock(
+    bookId: string,
+    qty: number,
+    tx: Prisma.TransactionClient
+  ) {
     await tx.book.update({
       where: { id: bookId },
       data: {
@@ -73,7 +81,10 @@ export class LoanRepository implements ILoanRepository {
     });
   }
 
-  async createLoanWithItems(data: Prisma.LoanCreateInput, tx: Prisma.TransactionClient) {
+  async createLoanWithItems(
+    data: Prisma.LoanCreateInput,
+    tx: Prisma.TransactionClient
+  ) {
     return tx.loan.create({
       data,
       include: {

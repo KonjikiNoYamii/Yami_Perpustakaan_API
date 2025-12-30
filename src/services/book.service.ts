@@ -1,16 +1,16 @@
-import type { Prisma, Book } from "../generated/client";
+import type { Prisma, Book } from "../../dist/generated/client";
 import * as BookRepo from "../repositories/book.repository";
 
 interface FindAllBooksParams {
   page: number;
   limit: number;
   search?: {
-  nama?: string;
-  categoryIds?: string[];   
-  available?: boolean | undefined;  
-  tahunTerbitFrom?: number | undefined;
-  tahunTerbitTo?: number | undefined;
-}
+    nama?: string;
+    categoryIds?: string[];
+    available?: boolean | undefined;
+    tahunTerbitFrom?: number | undefined;
+    tahunTerbitTo?: number | undefined;
+  };
 
   sortBy?: string;
   sortOrder?: "asc" | "desc";
@@ -71,16 +71,15 @@ export class BookService implements IBookService {
       deletedAt: null,
     };
 
-   if (search?.categoryIds?.length) {
-  whereClause.categoryId = {
-    in: search.categoryIds
-  }
-}
+    if (search?.categoryIds?.length) {
+      whereClause.categoryId = {
+        in: search.categoryIds,
+      };
+    }
 
-if (search?.available === true) {
-  whereClause.stok = { gt: 0 }
-}
-
+    if (search?.available === true) {
+      whereClause.stok = { gt: 0 };
+    }
 
     if (search?.tahunTerbitFrom || search?.tahunTerbitTo) {
       whereClause.tahunTerbit = {};
@@ -91,7 +90,6 @@ if (search?.available === true) {
         whereClause.tahunTerbit.lte = search.tahunTerbitTo;
       }
     }
-
 
     const sortCriteria: Prisma.BookOrderByWithRelationInput = sortBy
       ? { [sortBy]: sortOrder ?? "desc" }

@@ -1,4 +1,4 @@
-import type { PrismaClient, Prisma, Loan} from "../generated/client";
+import type { PrismaClient, Prisma, Loan } from "../../dist/generated/client";
 import type { ILoanRepository } from "../repositories/loan.repository";
 
 export interface CreateLoanInput {
@@ -37,14 +37,14 @@ export class LoanService {
   // ===============================
   checkout = async (userId: string, data: CreateLoanInput) => {
     return this.prisma.$transaction(async (tx) => {
-      const bookIds = data.items.map(i => i.bookId);
+      const bookIds = data.items.map((i) => i.bookId);
 
       const books = await this.loanRepo.findBooksForCheckout(bookIds, tx);
 
       const loanItems: Prisma.LoanItemCreateWithoutLoanInput[] = [];
 
       for (const item of data.items) {
-        const book = books.find(b => b.id === item.bookId);
+        const book = books.find((b) => b.id === item.bookId);
 
         if (!book) {
           throw new Error(`Buku ${item.bookId} tidak ditemukan`);
@@ -80,7 +80,9 @@ export class LoanService {
   // ===============================
   // GET ALL LOAN (ADMIN)
   // ===============================
-  getAllLoans = async (params: FindAllLoanParams): Promise<LoanListResponse> => {
+  getAllLoans = async (
+    params: FindAllLoanParams
+  ): Promise<LoanListResponse> => {
     const { page, limit, search, sortBy, sortOrder } = params;
     const skip = (page - 1) * limit;
 
