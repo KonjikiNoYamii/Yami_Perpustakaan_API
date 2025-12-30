@@ -34,8 +34,8 @@ export class BookRepository {
         return this.prisma.book.create({
             data,
             include: {
-                category: true
-            }
+                category: true,
+            },
         });
     };
     update = async (id, data) => {
@@ -70,19 +70,16 @@ export class BookRepository {
             _avg: { harga: true },
             _sum: { stok: true },
             _min: { harga: true },
-            _max: { harga: true }
+            _max: { harga: true },
         });
     };
     getBookByCategoryIdAndPublicationYear = async () => {
         return await this.prisma.book.groupBy({
-            by: ['categoryId', 'tahunTerbit'],
+            by: ["categoryId", "tahunTerbit"],
             _count: { id: true },
             _avg: { harga: true },
             _sum: { stok: true },
-            orderBy: [
-                { categoryId: 'asc' },
-                { tahunTerbit: 'asc' }
-            ]
+            orderBy: [{ categoryId: "asc" }, { tahunTerbit: "asc" }],
         });
     };
 }

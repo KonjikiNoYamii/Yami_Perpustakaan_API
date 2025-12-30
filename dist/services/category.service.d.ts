@@ -1,4 +1,4 @@
-import { Prisma } from "../generated";
+import { Prisma } from "../../dist/generated";
 import * as categoryRepo from "../repositories/category.repository";
 export declare class CategoryService {
     private prisma;

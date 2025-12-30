@@ -1,4 +1,4 @@
-import type { Prisma, PrismaClient } from "../generated/client";
+import type { Prisma, PrismaClient } from "../../dist/generated/client";
 export declare class UserRepository {
     private prisma;
     constructor(prisma: PrismaClient);

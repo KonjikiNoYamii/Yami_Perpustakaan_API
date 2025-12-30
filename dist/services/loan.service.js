@@ -10,11 +10,11 @@ export class LoanService {
     // ===============================
     checkout = async (userId, data) => {
         return this.prisma.$transaction(async (tx) => {
-            const bookIds = data.items.map(i => i.bookId);
+            const bookIds = data.items.map((i) => i.bookId);
             const books = await this.loanRepo.findBooksForCheckout(bookIds, tx);
             const loanItems = [];
             for (const item of data.items) {
-                const book = books.find(b => b.id === item.bookId);
+                const book = books.find((b) => b.id === item.bookId);
                 if (!book) {
                     throw new Error(`Buku ${item.bookId} tidak ditemukan`);
                 }

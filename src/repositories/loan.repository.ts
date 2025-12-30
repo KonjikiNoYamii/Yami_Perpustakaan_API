@@ -5,7 +5,7 @@ import type {
   User,
   LoanItem,
   Book,
-} from "../../dist/generated";
+} from "../../dist/generated/client";
 
 export type LoanWithItems = Loan & {
   user: User;

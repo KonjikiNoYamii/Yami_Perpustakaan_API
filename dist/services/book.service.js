@@ -11,7 +11,7 @@ export class BookService {
         };
         if (search?.categoryIds?.length) {
             whereClause.categoryId = {
-                in: search.categoryIds
+                in: search.categoryIds,
             };
         }
         if (search?.available === true) {
