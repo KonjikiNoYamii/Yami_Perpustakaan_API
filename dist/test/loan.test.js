@@ -1,16 +1,16 @@
 import request from "supertest";
 // import jwt from "jsonwebtoken";
-import app from "../app";
+import app from "../app.js";
 // import config from "../utils/env";
 describe("GET /api/loan", () => {
     // const token = jwt.sign({ id: 1, role: 'ADMIN' }, config.JWT_SECRET)
-    it('should return 401 if no token provided', async () => {
-        const res = await request(app).get('/api/loans');
+    it("should return 401 if no token provided", async () => {
+        const res = await request(app).get("/api/loans");
         expect(res.statusCode).toEqual(400);
         expect(res.body.success).toBe(false);
     });
-    it('should return 200 and list of loans', async () => {
-        const res = await request(app).get('/api/loan');
+    it("should return 200 and list of loans", async () => {
+        const res = await request(app).get("/api/loan");
         // .set('Authorization', `Bearer ${token}`)
         expect(res.statusCode).toEqual(200);
         expect(res.body.success).toBe(true);

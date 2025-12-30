@@ -1,8 +1,8 @@
 // src/test/user.test.ts
 import request from "supertest";
-import app from "../app";
+import app from "../app.js";
 import jwt from "jsonwebtoken";
-import config from "../utils/env";
+import config from "../utils/env.js";
 // Token admin
 const AdminToken = jwt.sign({ id: "89aa195b-4c85-47b5-bba3-070ee0764ff3", role: "ADMIN" }, // pastikan ini ada di DB test
 config.JWT_SECRET);

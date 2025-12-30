@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../app";
+import app from "../app.js";
 // import config from "../utils/env";
 // import jwt from "jsonwebtoken"
 //     const userToken = jwt.sign(

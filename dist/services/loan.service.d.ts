@@ -1,5 +1,5 @@
-import type { PrismaClient, Loan } from "../../dist/generated/client";
-import type { ILoanRepository } from "../repositories/loan.repository";
+import type { PrismaClient, Loan } from "../../dist/generated/client.js";
+import type { ILoanRepository } from "../repositories/loan.repository.js";
 export interface CreateLoanInput {
     items: {
         bookId: string;

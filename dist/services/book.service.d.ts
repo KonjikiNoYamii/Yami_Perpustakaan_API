@@ -1,5 +1,5 @@
-import type { Prisma, Book } from "../../dist/generated/client";
-import * as BookRepo from "../repositories/book.repository";
+import type { Prisma, Book } from "../../dist/generated/client.js";
+import * as BookRepo from "../repositories/book.repository.js";
 interface FindAllBooksParams {
     page: number;
     limit: number;

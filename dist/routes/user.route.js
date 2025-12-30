@@ -1,11 +1,11 @@
 import { Router } from "express";
-import * as userController from "../controllers/user.controller";
-import { authenticate, adminOnly } from "../middlewares/auth.middleware";
-import { validate } from "../utils/validation";
-import { userIdValidation } from "../validations/user.validation";
-import { UserRepository } from "../repositories/user.repository";
-import prismaInstance from "../database";
-import { UserService } from "../services/user.service";
+import * as userController from "../controllers/user.controller.js";
+import { authenticate, adminOnly } from "../middlewares/auth.middleware.js";
+import { validate } from "../utils/validation.js";
+import { userIdValidation } from "../validations/user.validation.js";
+import { UserRepository } from "../repositories/user.repository.js";
+import prismaInstance from "../database.js";
+import { UserService } from "../services/user.service.js";
 const router = Router();
 const repo = new UserRepository(prismaInstance);
 const service = new UserService(repo);

@@ -1,5 +1,5 @@
-import { Prisma } from "../../dist/generated";
-import * as categoryRepo from "../repositories/category.repository";
+import { Prisma } from "../../dist/generated/index.js";
+import * as categoryRepo from "../repositories/category.repository.js";
 export declare class CategoryService {
     private prisma;
     constructor(prisma: categoryRepo.CategoryRepository);

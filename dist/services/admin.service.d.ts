@@ -1,4 +1,4 @@
-import * as userRepo from "../repositories/user.repository";
+import * as userRepo from "../repositories/user.repository.js";
 interface CreateAdminInput {
     nama: string;
     email: string;

@@ -1,4 +1,4 @@
-import * as userRepo from "../repositories/user.repository";
+import * as userRepo from "../repositories/user.repository.js";
 export declare class UserService {
     private prisma;
     constructor(prisma: userRepo.UserRepository);

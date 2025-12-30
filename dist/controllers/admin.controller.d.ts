@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import * as adminService from "../services/admin.service";
+import * as adminService from "../services/admin.service.js";
 export declare class AdminController {
     private prisma;
     constructor(prisma: adminService.AdminService);

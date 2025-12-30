@@ -1,4 +1,4 @@
-import { successResponse } from "../utils/response";
+import { successResponse } from "../utils/response.js";
 export class CategoryController {
     prisma;
     constructor(prisma) {

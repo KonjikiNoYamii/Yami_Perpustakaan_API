@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import type { LoanService } from "../services/loan.service";
+import type { LoanService } from "../services/loan.service.js";
 export interface ILoanController {
     checkout(req: Request, res: Response): Promise<void>;
     getAllLoans(req: Request, res: Response): Promise<void>;

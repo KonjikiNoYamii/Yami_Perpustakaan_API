@@ -1,8 +1,8 @@
 import { Router } from "express";
-import * as authController from "../controllers/auth.controller";
-import { UserRepository } from "../repositories/user.repository";
-import prismaInstance from "../database";
-import { AuthService } from "../services/auth.service";
+import * as authController from "../controllers/auth.controller.js";
+import { UserRepository } from "../repositories/user.repository.js";
+import prismaInstance from "../database.js";
+import { AuthService } from "../services/auth.service.js";
 const router = Router();
 const repo = new UserRepository(prismaInstance);
 const service = new AuthService(repo);

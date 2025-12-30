@@ -1,8 +1,8 @@
 import request from "supertest";
-import app from "../app";
+import app from "../app.js";
 // import path from "node:path";
 import jwt from "jsonwebtoken";
-import config from "../utils/env";
+import config from "../utils/env.js";
 // UUID contoh
 const testBookUUID = "00d626a8-b0c3-4338-8de4-3e8b8421fdd7";
 const invalidUUID = "00000000-0000-0000-0000-000000000000";

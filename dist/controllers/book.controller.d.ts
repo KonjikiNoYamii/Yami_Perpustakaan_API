@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import * as BookService from "../services/book.service";
+import * as BookService from "../services/book.service.js";
 export declare class BookController {
     private prisma;
     constructor(prisma: BookService.BookService);

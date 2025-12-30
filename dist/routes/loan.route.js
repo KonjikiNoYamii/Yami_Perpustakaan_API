@@ -1,11 +1,11 @@
 import { Router } from "express";
-import * as loanController from "../controllers/loan.controller";
-import { authenticate, adminOnly } from "../middlewares/auth.middleware";
-import { validate } from "../utils/validation";
-import { checkoutValidation, loanIdValidation } from "../validations/loan.validation";
-import { LoanRepository } from "../repositories/loan.repository";
-import prismaInstance from "../database";
-import { LoanService } from "../services/loan.service";
+import * as loanController from "../controllers/loan.controller.js";
+import { authenticate, adminOnly } from "../middlewares/auth.middleware.js";
+import { validate } from "../utils/validation.js";
+import { checkoutValidation, loanIdValidation } from "../validations/loan.validation.js";
+import { LoanRepository } from "../repositories/loan.repository.js";
+import prismaInstance from "../database.js";
+import { LoanService } from "../services/loan.service.js";
 const router = Router();
 const repo = new LoanRepository(prismaInstance);
 const service = new LoanService(prismaInstance, repo);

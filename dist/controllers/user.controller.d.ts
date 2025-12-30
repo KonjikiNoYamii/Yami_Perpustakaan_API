@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import * as userService from "../services/user.service";
+import * as userService from "../services/user.service.js";
 export declare class UserController {
     private prisma;
     constructor(prisma: userService.UserService);

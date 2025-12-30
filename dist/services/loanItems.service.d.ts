@@ -1,4 +1,4 @@
-import * as loanItemRepo from "../repositories/loanItem.repository";
+import * as loanItemRepo from "../repositories/loanItem.repository.js";
 export declare class LoanItemService {
     private prisma;
     constructor(prisma: loanItemRepo.loanItemRepository);

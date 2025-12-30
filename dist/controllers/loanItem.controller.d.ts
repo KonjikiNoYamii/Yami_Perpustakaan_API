@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import * as loanItemService from "../services/loanItems.service";
+import * as loanItemService from "../services/loanItems.service.js";
 export declare class LoanItemController {
     private prisma;
     constructor(prisma: loanItemService.LoanItemService);

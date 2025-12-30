@@ -1,5 +1,5 @@
-import { PrismaClient } from "../dist/generated";
-export declare const getPrisma: () => PrismaClient<import("../dist/generated").Prisma.PrismaClientOptions, never, import("../dist/generated/runtime/client").DefaultArgs>;
-declare const prismaInstance: PrismaClient<import("../dist/generated").Prisma.PrismaClientOptions, never, import("../dist/generated/runtime/client").DefaultArgs>;
+import { PrismaClient } from "../dist/generated/index.js";
+export declare const getPrisma: () => PrismaClient<import("../dist/generated/index.js").Prisma.PrismaClientOptions, never, import("../dist/generated/runtime/client.js").DefaultArgs>;
+declare const prismaInstance: PrismaClient<import("../dist/generated/index.js").Prisma.PrismaClientOptions, never, import("../dist/generated/runtime/client.js").DefaultArgs>;
 export default prismaInstance;
 //# sourceMappingURL=database.d.ts.map

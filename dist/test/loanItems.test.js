@@ -1,8 +1,8 @@
 // src/test/loanItem.test.ts
 import request from "supertest";
-import app from "../app";
+import app from "../app.js";
 import jwt from "jsonwebtoken";
-import config from "../utils/env";
+import config from "../utils/env.js";
 // Contoh UUID
 const loanItemUUID = "4637e7e0-9f66-4504-aca1-7d36ebf8951a";
 const loanUUID = "44c64c1a-246d-45e5-a342-77c07e73352b";

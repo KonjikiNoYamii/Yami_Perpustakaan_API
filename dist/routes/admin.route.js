@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { AdminController } from "../controllers/admin.controller";
-import { adminOnly, authenticate } from "../middlewares/auth.middleware";
-import { UserRepository } from "../repositories/user.repository";
-import prismaInstance from "../database";
-import { AdminService } from "../services/admin.service";
+import { AdminController } from "../controllers/admin.controller.js";
+import { adminOnly, authenticate } from "../middlewares/auth.middleware.js";
+import { UserRepository } from "../repositories/user.repository.js";
+import prismaInstance from "../database.js";
+import { AdminService } from "../services/admin.service.js";
 const router = Router();
 const repo = new UserRepository(prismaInstance);
 const service = new AdminService(repo);

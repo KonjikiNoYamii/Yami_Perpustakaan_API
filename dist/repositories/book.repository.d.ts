@@ -1,4 +1,4 @@
-import type { Book, Prisma, PrismaClient } from "../../dist/generated/client";
+import type { Book, Prisma, PrismaClient } from "../../dist/generated/client.js";
 export declare class BookRepository {
     private prisma;
     constructor(prisma: PrismaClient);

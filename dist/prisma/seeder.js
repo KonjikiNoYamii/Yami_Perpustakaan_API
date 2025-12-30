@@ -1,18 +1,18 @@
-import { getPrisma } from "../database";
+import { getPrisma } from "../database.js";
 import { faker } from "@faker-js/faker";
 import bcrypt from "bcrypt";
 const prisma = getPrisma();
 async function main() {
-    console.log("🌱 Starting library database seeding...");
+    console.log("\uD83C\uDF31 Starting library database seeding...");
     // 🧹 CLEAN DATA (urut sesuai relasi)
     await prisma.loanItem.deleteMany();
     await prisma.loan.deleteMany();
     await prisma.book.deleteMany();
     await prisma.category.deleteMany();
     await prisma.user.deleteMany();
-    console.log("🧹 Existing data cleaned");
+    console.log("\uD83E\uDDF9 Existing data cleaned");
     // 1️⃣ CATEGORY
-    console.log("📚 Creating categories...");
+    console.log("\uD83D\uDCDA Creating categories...");
     const categoryNames = [
         "Novel",
         "Teknologi",
@@ -30,7 +30,7 @@ async function main() {
     })));
     console.log(`✅ ${categories.length} categories created`);
     // 2️⃣ USER
-    console.log("👤 Creating users...");
+    console.log("\uD83D\uDC64 Creating users...");
     const users = await Promise.all(Array.from({ length: 50 }, async () => {
         return prisma.user.create({
             data: {
@@ -45,14 +45,14 @@ async function main() {
     console.log(`✅ ${users.length} users created`);
     // 3️⃣ BOOK
     // 3️⃣ BOOK
-    console.log("📖 Creating books...");
+    console.log("\uD83D\uDCD6 Creating books...");
     const books = await Promise.all(Array.from({ length: 100 }, () => {
         const category = faker.helpers.arrayElement(categories);
         return prisma.book.create({
             data: {
                 nama: faker.book.title(),
                 deskripsi: faker.lorem.paragraph(),
-                harga: faker.number.int({ min: 10_000, max: 250_000 }),
+                harga: faker.number.int({ min: 10000, max: 250000 }),
                 stok: faker.number.int({ min: 0, max: 20 }),
                 coverUrl: faker.image.url(),
                 // ✅ FIELD TAMBAHAN SESUAI MODEL
@@ -68,7 +68,7 @@ async function main() {
     }));
     console.log(`✅ ${books.length} books created`);
     // 4️⃣ LOAN + LOAN ITEM
-    console.log("📦 Creating loans...");
+    console.log("\uD83D\uDCE6 Creating loans...");
     const loans = [];
     for (let i = 0; i < 80; i++) {
         const user = faker.helpers.arrayElement(users);
@@ -97,8 +97,8 @@ async function main() {
     console.log(`✅ ${loans.length} loans created`);
     const totalLoanItems = loans.reduce((sum, loan) => sum + loan.items.length, 0);
     // 📊 SUMMARY
-    console.log("\n🎉 Seeding completed!");
-    console.log("📊 Summary:");
+    console.log("\n\uD83C\uDF89 Seeding completed!");
+    console.log("\uD83D\uDCCA Summary:");
     console.log(`   - Categories : ${categories.length}`);
     console.log(`   - Users      : ${users.length}`);
     console.log(`   - Books      : ${books.length}`);
@@ -107,7 +107,7 @@ async function main() {
 }
 main()
     .catch((e) => {
-    console.error("❌ Seeding error:", e);
+    console.error("\u274C Seeding error:", e);
     process.exit(1);
 })
     .finally(async () => {

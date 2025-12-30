@@ -1,8 +1,8 @@
-import { PrismaClient } from "../../dist/generated/client";
+import { PrismaClient } from "../../dist/generated/client.js";
 export declare class loanItemRepository {
     private prisma;
     constructor(prisma: PrismaClient);
-    findByLoanId: (loanId: string) => import("../../dist/generated").Prisma.PrismaPromise<({
+    findByLoanId: (loanId: string) => import("../../dist/generated/index.js").Prisma.PrismaPromise<({
         book: {
             category: {
                 id: string;
@@ -33,7 +33,7 @@ export declare class loanItemRepository {
         bookId: string;
         qty: number;
     })[]>;
-    findById: (id: string) => import("../../dist/generated").Prisma.Prisma__LoanItemClient<({
+    findById: (id: string) => import("../../dist/generated/index.js").Prisma.Prisma__LoanItemClient<({
         book: {
             category: {
                 id: string;
@@ -85,6 +85,6 @@ export declare class loanItemRepository {
         loanId: string;
         bookId: string;
         qty: number;
-    }) | null, null, import("../../dist/generated/runtime/client").DefaultArgs, import("../../dist/generated").Prisma.PrismaClientOptions>;
+    }) | null, null, import("../../dist/generated/runtime/client.js").DefaultArgs, import("../../dist/generated/index.js").Prisma.PrismaClientOptions>;
 }
 //# sourceMappingURL=loanItem.repository.d.ts.map
