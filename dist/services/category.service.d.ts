@@ -1,36 +1,42 @@
-export declare const getAllCategories: () => Promise<{
-    id: string;
-    nama: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-}[]>;
-export declare const getCategoryById: (id: string) => Promise<{
-    id: string;
-    nama: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-}>;
-export declare const createCategory: (nama: string) => Promise<{
-    id: string;
-    nama: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-}>;
-export declare const updateCategory: (id: string, nama: string) => Promise<{
-    id: string;
-    nama: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-}>;
-export declare const deleteCategory: (id: string) => Promise<{
-    id: string;
-    nama: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-}>;
+import { Prisma } from "../generated";
+import * as categoryRepo from "../repositories/category.repository";
+export declare class CategoryService {
+    private prisma;
+    constructor(prisma: categoryRepo.CategoryRepository);
+    getAllCategories: () => Promise<{
+        id: string;
+        nama: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+    }[]>;
+    getCategoryById: (id: string) => Promise<{
+        id: string;
+        nama: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+    }>;
+    createCategory: (nama: string) => Promise<{
+        id: string;
+        nama: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+    }>;
+    updateCategory: (id: string, nama: Prisma.CategoryUpdateInput) => Promise<{
+        id: string;
+        nama: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+    }>;
+    deleteCategory: (id: string) => Promise<{
+        id: string;
+        nama: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+    }>;
+}
 //# sourceMappingURL=category.service.d.ts.map

@@ -1,14 +1,21 @@
 import type { Request, Response } from "express"
-import * as bookService from "../services/book.service"
+import * as BookService from "../services/book.service"
 import { successResponse } from "../utils/response"
 
-export const getBooks = async (req: Request, res: Response) => {
-  const result = await bookService.getAllBooks({
+export class BookController {
+  constructor(private prisma : BookService.BookService){
+  }
+  
+  getBooks = async (req: Request, res: Response) => {
+  const result = await this.prisma.getAllBooks({
     page: Number(req.query.page) || 1,
     limit: Number(req.query.limit) || 10,
     search: {
       nama: req.query.search as string,
-      categoryId: req.query.categoryId as string
+      categoryIds: req.query.categoryId as string[],
+      available:req.query.available as boolean | undefined,
+      tahunTerbitFrom:req.query.tahunTerbitFrom as number | undefined,
+      tahunTerbitTo:req.query.tahunTerbitTo as number | undefined
     },
     sortBy: req.query.sortBy as string,
     sortOrder: req.query.sortOrder as "asc" | "desc"
@@ -23,11 +30,11 @@ export const getBooks = async (req: Request, res: Response) => {
   )
 }
 
-export const getById= async (req: Request, res: Response) => {
+getById= async (req: Request, res: Response) => {
   if (!req.params.id) {
     throw new Error("Pamateter tidak ada!")
   }
-  const book = await bookService.getBookById(req.params.id)
+  const book = await this.prisma.getBookById(req.params.id)
 
   successResponse(
     res,
@@ -38,24 +45,28 @@ export const getById= async (req: Request, res: Response) => {
   )
 }
 
-export const createBook = async (req: Request, res: Response) => {
+createBook = async (req: Request, res: Response) => {
   const file = req.file
   if (!file) {
     throw new Error("Image is Required!")
   }
 
-  const {nama, harga, deskripsi, stok,categoryId} = req.body
+  const {nama, harga, deskripsi, stok,categoryId, tahunTerbit, penerbit, penulis,isbn} = req.body
 
-  const imageurl = `/public/uploads/${file.filename}`
+  const coverUrl = `/public/uploads/${file.filename}`
 
-  const NewBook = {
-    nama,
-    harga,
-    deskripsi,
-    stok,
-    categoryId,
-    imageurl
-  }
+  const NewBook = await this.prisma.createBook({
+    nama:nama,
+    harga:harga,
+    deskripsi:deskripsi,
+    stok:stok,
+    categoryId:categoryId,
+    coverUrl:coverUrl,
+    tahunTerbit:tahunTerbit,
+    penulis:penulis,
+    penerbit:penerbit,
+    isbn:isbn || null
+  })
 
   successResponse(
     res,
@@ -66,25 +77,25 @@ export const createBook = async (req: Request, res: Response) => {
   )
 }
 
-export const updateBook = async (req: Request, res: Response) => {
+updateBook = async (req: Request, res: Response) => {
   if (!req.params.id) {
     throw new Error("Pamateter tidak ada!")
   }
-  const book = await bookService.updateBook(req.params.id, req.body)
+  const book = await this.prisma.updateBooks(req.params.id, req.body)
   successResponse(
     res,
     "Buku berhasil di update",
     book,
     null,
-    201
+    200
   )
 }
 
-export const deleteBook = async (req: Request, res: Response) => {
+deleteBook = async (req: Request, res: Response) => {
   if (!req.params.id) {
     throw new Error("Pamateter tidak ada!")
   }
-  const book = await bookService.deleteBook(req.params.id)
+  const book = await this.prisma.deleteBook(req.params.id)
   successResponse(
     res,
     "Buku telah dihapus!",
@@ -92,4 +103,18 @@ export const deleteBook = async (req: Request, res: Response) => {
     null,
     200
   )
+}
+
+getStats = async (_req:Request, res:Response) =>{
+  const book = await this.prisma.exec()
+
+  successResponse(
+    res,
+    "Buku telah diambil!",
+    book,
+    null,
+    200
+  )
+}
+
 }

@@ -1,65 +1,68 @@
-import { getPrisma } from "../prisma"
-import type { Prisma } from "../generated/client"
+import type { Prisma, PrismaClient } from "../generated/client";
 
-const prisma = getPrisma()
+export interface ICategoryRepository{
 
-export const findAll = (where?: Prisma.CategoryWhereInput) => {
-  return prisma.category.findMany({
+}
+
+export class CategoryRepository implements ICategoryRepository {
+  constructor(private prisma: PrismaClient){}
+  
+  findAll = (where?: Prisma.CategoryWhereInput) => {
+  return this.prisma.category.findMany({
     where: {
       deletedAt: null,
-      ...where
+      ...where,
     },
     orderBy: {
-      nama: "asc"
-    }
-  })
-}
+      nama: "asc",
+    },
+  });
+};
 
-export const findById = (id: string) => {
-  return prisma.category.findUnique({
+findById = (id: string) => {
+  return this.prisma.category.findUnique({
     where: {
       id,
-      deletedAt: null
-    }
-  })
-}
+      deletedAt: null,
+    },
+  });
+};
 
-export const findByName = (nama: string) => {
-  return prisma.category.findFirst({
+findByName = (nama: string) => {
+  return this.prisma.category.findFirst({
     where: {
       nama,
-      deletedAt: null
-    }
-  })
-}
-
-export const create = (data: Prisma.CategoryCreateInput) => {
-  return prisma.category.create({
-    data
-  })
-}
-
-export const update = (
-  id: string,
-  data: Prisma.CategoryUpdateInput
-) => {
-  return prisma.category.update({
-    where: {
-      id,
-      deletedAt: null
+      deletedAt: null,
     },
-    data
-  })
-}
+  });
+};
 
-export const softDelete = (id: string) => {
-  return prisma.category.update({
+create = (data: Prisma.CategoryCreateInput) => {
+  return this.prisma.category.create({
+    data,
+  });
+};
+
+update = (id: string, data: Prisma.CategoryUpdateInput) => {
+  return this.prisma.category.update({
     where: {
       id,
-      deletedAt: null
+      deletedAt: null,
+    },
+    data,
+  });
+};
+
+ softDelete = (id: string) => {
+  return this.prisma.category.update({
+    where: {
+      id,
+      deletedAt: null,
     },
     data: {
-      deletedAt: new Date()
-    }
-  })
+      deletedAt: new Date(),
+    },
+  });
+};
+
 }

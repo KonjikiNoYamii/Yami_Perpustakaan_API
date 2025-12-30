@@ -1,4 +1,4 @@
-import Express, {} from "express";
+import Express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
@@ -10,7 +10,10 @@ import categoryRouter from './routes/category.route';
 import loanRouter from './routes/loan.route';
 import loanItemRouter from './routes/loanItem.route';
 import authRouter from './routes/auth.route';
+import adminRouter from './routes/admin.route';
 import { requestLogger } from "./middlewares/logger.middleware";
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from "./utils/swagger";
 const app = Express();
 app.use(helmet());
 app.use(morgan("dev"));
@@ -18,6 +21,7 @@ app.use(cors());
 app.use(Express.json());
 app.set('query parser', 'extended');
 app.use(Express.static("public"));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use(requestLogger);
 app.get("/", (req, res) => {
     const waktuProses = Date.now() - (req.startTime || Date.now());
@@ -28,11 +32,12 @@ app.get("/", (req, res) => {
     }, null, 200);
 });
 app.use('/api/auth', authRouter);
-app.use('/api/books', booksRouter);
+app.use('/api/admin', adminRouter);
+app.use('/api/book', booksRouter);
 app.use('/api/users', userRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/loan', loanRouter);
-app.use('/api/loanItem', loanItemRouter);
+app.use('/api/loan-items', loanItemRouter);
 app.use(/.*/, (req, _res) => {
     throw new Error(`Route ${req.originalUrl} tidak ada di API`);
 });

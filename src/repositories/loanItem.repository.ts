@@ -1,40 +1,44 @@
-import { getPrisma } from "../prisma"
+import { PrismaClient } from "../generated";
 
-const prisma = getPrisma()
+export class loanItemRepository {
+  constructor(private prisma:PrismaClient){
 
+  }
+  // ===============================
+  // GET BY LOAN ID (PRIMARY USE)
 // ===============================
-// GET BY LOAN ID (PRIMARY USE)
-// ===============================
-export const findByLoanId = (loanId: string) => {
-  return prisma.loanItem.findMany({
+ findByLoanId = (loanId: string) => {
+  return this.prisma.loanItem.findMany({
     where: { loanId },
     include: {
       book: {
         include: {
-          category: true
-        }
-      }
-    }
-  })
-}
+          category: true,
+        },
+      },
+    },
+  });
+};
 
 // ===============================
 // GET BY ID (ADMIN / DEBUG)
 // ===============================
-export const findById = (id: string) => {
-  return prisma.loanItem.findUnique({
+ findById = (id: string) => {
+  return this.prisma.loanItem.findUnique({
     where: { id },
     include: {
       loan: {
         include: {
-          user: true
-        }
+          user: true,
+        },
       },
       book: {
         include: {
-          category: true
-        }
-      }
-    }
-  })
+          category: true,
+        },
+      },
+    },
+  });
+};
+
 }

@@ -2,14 +2,17 @@ import type { Request, Response } from "express"
 import * as categoryService from "../services/category.service"
 import { successResponse } from "../utils/response"
 
-// ===============================
+export class CategoryController {
+  constructor(private prisma:categoryService.CategoryService){}
+  
+  // ===============================
 // GET ALL (PUBLIC)
 // ===============================
-export const getCategories = async (
+getCategories = async (
   _req: Request,
   res: Response
 ) => {
-  const categories = await categoryService.getAllCategories()
+  const categories = await this.prisma.getAllCategories()
 
   successResponse(
     res,
@@ -23,14 +26,14 @@ export const getCategories = async (
 // ===============================
 // GET BY ID
 // ===============================
-export const getCategory = async (
+ getCategory = async (
   req: Request,
   res: Response
 ) => {
   if (!req.params.id) {
     throw new Error("ID tidak ditemukan!")
   }
-  const category = await categoryService.getCategoryById(
+  const category = await this.prisma.getCategoryById(
     req.params.id
   )
 
@@ -46,7 +49,7 @@ export const getCategory = async (
 // ===============================
 // CREATE (ADMIN)
 // ===============================
-export const createCategory = async (
+ createCategory = async (
   req: Request,
   res: Response
 ) => {
@@ -56,7 +59,7 @@ export const createCategory = async (
     throw new Error("Nama category wajib diisi")
   }
 
-  const category = await categoryService.createCategory(nama)
+  const category = await this.prisma.createCategory(nama)
 
   successResponse(
     res,
@@ -70,16 +73,16 @@ export const createCategory = async (
 // ===============================
 // UPDATE (ADMIN)
 // ===============================
-export const updateCategory = async (
+ updateCategory = async (
   req: Request,
   res: Response
 ) => {
   if (!req.params.id) {
     throw new Error("ID tidak ditemukan!")
   }
-  const category = await categoryService.updateCategory(
+  const category = await this.prisma.updateCategory(
     req.params.id,
-    req.body.nama
+    req.body
   )
 
   successResponse(
@@ -94,14 +97,14 @@ export const updateCategory = async (
 // ===============================
 // DELETE (ADMIN)
 // ===============================
-export const deleteCategory = async (
+ deleteCategory = async (
   req: Request,
   res: Response
 ) => {
   if (!req.params.id) {
     throw new Error("ID tidak ditemukan!")
   }
-  const category = await categoryService.deleteCategory(
+  const category = await this.prisma.deleteCategory(
     req.params.id
   )
 
@@ -112,4 +115,6 @@ export const deleteCategory = async (
     null,
     200
   )
+}
+
 }

@@ -1,98 +1,132 @@
-import type { Prisma } from "../generated/client";
-import type { BookCreateInput, BookUpdateInput } from "../generated/models";
-export declare const findAll: (skip: number, take: number, where: Prisma.BookWhereInput, orderBy: Prisma.BookOrderByWithRelationInput) => Promise<({
-    category: {
+import type { Book, Prisma, PrismaClient } from "../generated";
+export declare class BookRepository {
+    private prisma;
+    constructor(prisma: PrismaClient);
+    findAll: (skip: number, take: number, where: Prisma.BookWhereInput, orderBy: Prisma.BookOrderByWithRelationInput) => Promise<Book[]>;
+    countAll: (where: Prisma.BookWhereInput) => Promise<number>;
+    findById: (id: string) => Promise<({
+        category: {
+            id: string;
+            nama: string;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt: Date | null;
+        };
+    } & {
         id: string;
         nama: string;
+        deskripsi: string;
+        harga: number;
+        stok: number;
+        coverUrl: string | null;
+        tahunTerbit: number;
+        penulis: string;
+        penerbit: string;
+        isbn: string | null;
+        categoryId: string;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
-    };
-} & {
-    id: string;
-    nama: string;
-    harga: number;
-    deskripsi: string;
-    stok: number;
-    coverUrl: string | null;
-    categoryId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-})[]>;
-export declare const countAll: (where: Prisma.BookWhereInput) => Prisma.PrismaPromise<number>;
-export declare const findById: (id: string) => Promise<({
-    category: {
+    }) | null>;
+    create: (data: Prisma.BookCreateInput) => Promise<{
+        category: {
+            id: string;
+            nama: string;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt: Date | null;
+        };
+    } & {
         id: string;
         nama: string;
+        deskripsi: string;
+        harga: number;
+        stok: number;
+        coverUrl: string | null;
+        tahunTerbit: number;
+        penulis: string;
+        penerbit: string;
+        isbn: string | null;
+        categoryId: string;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
-    };
-} & {
-    id: string;
-    nama: string;
-    harga: number;
-    deskripsi: string;
-    stok: number;
-    coverUrl: string | null;
-    categoryId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-}) | null>;
-export declare const create: (data: BookCreateInput) => Promise<{
-    id: string;
-    nama: string;
-    harga: number;
-    deskripsi: string;
-    stok: number;
-    coverUrl: string | null;
-    categoryId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-}>;
-export declare const update: (id: string, data: BookUpdateInput) => Prisma.Prisma__BookClient<{
-    category: {
+    }>;
+    update: (id: string, data: Prisma.BookUpdateInput) => Promise<{
+        category: {
+            id: string;
+            nama: string;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt: Date | null;
+        };
+    } & {
         id: string;
         nama: string;
+        deskripsi: string;
+        harga: number;
+        stok: number;
+        coverUrl: string | null;
+        tahunTerbit: number;
+        penulis: string;
+        penerbit: string;
+        isbn: string | null;
+        categoryId: string;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
-    };
-} & {
-    id: string;
-    nama: string;
-    harga: number;
-    deskripsi: string;
-    stok: number;
-    coverUrl: string | null;
-    categoryId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-}, never, import("@prisma/client/runtime/client").DefaultArgs, {
-    omit: Prisma.GlobalOmitConfig | undefined;
-}>;
-export declare const softDelete: (id: string) => Promise<{
-    category: {
+    }>;
+    softDelete: (id: string) => Promise<{
+        category: {
+            id: string;
+            nama: string;
+            createdAt: Date;
+            updatedAt: Date;
+            deletedAt: Date | null;
+        };
+    } & {
         id: string;
         nama: string;
+        deskripsi: string;
+        harga: number;
+        stok: number;
+        coverUrl: string | null;
+        tahunTerbit: number;
+        penulis: string;
+        penerbit: string;
+        isbn: string | null;
+        categoryId: string;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
-    };
-} & {
-    id: string;
-    nama: string;
-    harga: number;
-    deskripsi: string;
-    stok: number;
-    coverUrl: string | null;
-    categoryId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-}>;
+    }>;
+    getStats: () => Promise<Prisma.GetBookAggregateType<{
+        _count: {
+            id: true;
+        };
+        _avg: {
+            harga: true;
+        };
+        _sum: {
+            stok: true;
+        };
+        _min: {
+            harga: true;
+        };
+        _max: {
+            harga: true;
+        };
+    }>>;
+    getBookByCategoryIdAndPublicationYear: () => Promise<(Prisma.PickEnumerable<Prisma.BookGroupByOutputType, ("tahunTerbit" | "categoryId")[]> & {
+        _count: {
+            id: number;
+        };
+        _avg: {
+            harga: number | null;
+        };
+        _sum: {
+            stok: number | null;
+        };
+    })[]>;
+}
 //# sourceMappingURL=book.repository.d.ts.map

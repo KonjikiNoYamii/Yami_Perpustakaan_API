@@ -1,122 +1,132 @@
-import { getPrisma } from "../prisma"
-import * as loanRepo from "../repositories/loan.repository"
+import type { PrismaClient, Prisma, Loan} from "../generated/client";
+import type { ILoanRepository } from "../repositories/loan.repository";
 
-const prisma = getPrisma()
-
-// ===============================
-// INTERFACE
-// ===============================
-export interface CreateLoanItem {
-  bookId: string
-  qty: number
+export interface CreateLoanInput {
+  items: {
+    bookId: string;
+    qty: number;
+  }[];
 }
 
-export interface CreateLoan {
-  items: CreateLoanItem[]
+export interface FindAllLoanParams {
+  page: number;
+  limit: number;
+  search?: {
+    userId?: string;
+    status?: "BORROWED" | "RETURNED";
+  };
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
 }
 
-// ===============================
-// CREATE LOAN (CHECKOUT)
-// ===============================
-export const checkoutLoan = async (
-  data: CreateLoan,
-  userId: string
-) => {
-  return prisma.$transaction(async (tx) => {
-
-    // 1️⃣ Ambil semua buku sekaligus
-    const books = await tx.book.findMany({
-      where: {
-        id: { in: data.items.map(i => i.bookId) },
-        deletedAt: null
-      }
-    })
-
-    // 2️⃣ Validasi & kurangi stok
-    const loanItems = []
-
-    for (const item of data.items) {
-      const book = books.find(b => b.id === item.bookId)
-
-      if (!book) {
-        throw new Error("Buku tidak ditemukan")
-      }
-
-      if (book.stok < item.qty) {
-        throw new Error(`Stok buku ${book.nama} tidak cukup`)
-      }
-
-      loanItems.push({
-        book: { connect: { id: book.id } },
-        qty: item.qty
-      })
-
-      await tx.book.update({
-        where: { id: book.id },
-        data: {
-          stok: { decrement: item.qty }
-        }
-      })
-    }
-
-    // 3️⃣ Buat Loan + LoanItem
-    return tx.loan.create({
-      data: {
-        user: { connect: { id: userId } },
-        status: "BORROWED",
-        items: {
-          create: loanItems
-        }
-      },
-      include: {
-        items: {
-          include: {
-            book: true
-          }
-        }
-      }
-    })
-  })
+export interface LoanListResponse {
+  loans: Loan[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
 }
 
-// ===============================
-// GET ALL LOAN (ADMIN)
-// ===============================
-export const getAllLoans = async () => {
-  return loanRepo.findAll({ deletedAt: null })
-}
+export class LoanService {
+  constructor(
+    private prisma: PrismaClient,
+    private loanRepo: ILoanRepository
+  ) {}
 
-// ===============================
-// RETURN LOAN
-// ===============================
-export const returnLoan = async (loanId: string) => {
-  return prisma.$transaction(async (tx) => {
+  // ===============================
+  // CHECKOUT (TRANSACTION)
+  // ===============================
+  checkout = async (userId: string, data: CreateLoanInput) => {
+    return this.prisma.$transaction(async (tx) => {
+      const bookIds = data.items.map(i => i.bookId);
 
-    const loan = await tx.loan.findUnique({
-      where: { id: loanId },
-      include: { items: true }
-    })
+      const books = await this.loanRepo.findBooksForCheckout(bookIds, tx);
 
-    if (!loan) {
-      throw new Error("Loan tidak ditemukan")
-    }
+      const loanItems: Prisma.LoanItemCreateWithoutLoanInput[] = [];
 
-    // Kembalikan stok
-    for (const item of loan.items) {
-      await tx.book.update({
-        where: { id: item.bookId },
-        data: {
-          stok: { increment: item.qty }
+      for (const item of data.items) {
+        const book = books.find(b => b.id === item.bookId);
+
+        if (!book) {
+          throw new Error(`Buku ${item.bookId} tidak ditemukan`);
         }
-      })
-    }
 
-    return tx.loan.update({
-      where: { id: loanId },
-      data: {
-        status: "RETURNED",
-        tanggalKembali: new Date()
+        if (book.stok < item.qty) {
+          throw new Error(`Stok buku ${book.nama} tidak cukup`);
+        }
+
+        loanItems.push({
+          book: {
+            connect: { id: book.id },
+          },
+          qty: item.qty,
+        });
+
+        await this.loanRepo.decrementStock(book.id, item.qty, tx);
       }
-    })
-  })
+
+      return this.loanRepo.createLoanWithItems(
+        {
+          user: { connect: { id: userId } },
+          status: "BORROWED",
+          items: {
+            create: loanItems,
+          },
+        },
+        tx
+      );
+    });
+  };
+
+  // ===============================
+  // GET ALL LOAN (ADMIN)
+  // ===============================
+  getAllLoans = async (params: FindAllLoanParams): Promise<LoanListResponse> => {
+    const { page, limit, search, sortBy, sortOrder } = params;
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.LoanWhereInput = {
+      deletedAt: null,
+    };
+
+    if (search?.userId) where.userId = search.userId;
+    if (search?.status) where.status = search.status;
+
+    const orderBy: Prisma.LoanOrderByWithRelationInput = sortBy
+      ? { [sortBy]: sortOrder ?? "desc" }
+      : { createdAt: "desc" };
+
+    const loans = await this.loanRepo.findAll(skip, limit, where, orderBy);
+    const total = await this.loanRepo.countAll(where);
+
+    return {
+      loans,
+      total,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+    };
+  };
+
+  // ===============================
+  // RETURN LOAN (TRANSACTION)
+  // ===============================
+  returnLoan = async (loanId: string) => {
+    return this.prisma.$transaction(async (tx) => {
+      const loan = await this.loanRepo.findById(loanId);
+
+      if (!loan) {
+        throw new Error("Loan tidak ditemukan");
+      }
+
+      for (const item of loan.items) {
+        await tx.book.update({
+          where: { id: item.bookId },
+          data: {
+            stok: { increment: item.qty },
+          },
+        });
+      }
+
+      return this.loanRepo.returnLoan(loanId, tx);
+    });
+  };
 }

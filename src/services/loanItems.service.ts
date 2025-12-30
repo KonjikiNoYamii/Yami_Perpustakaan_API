@@ -1,15 +1,22 @@
 import * as loanItemRepo from "../repositories/loanItem.repository"
 
-export const getLoanItemsByLoanId = async (loanId: string) => {
-  return loanItemRepo.findByLoanId(loanId)
+export class LoanItemService {
+  constructor(private prisma:loanItemRepo.loanItemRepository){
+
+  }
+  
+  getLoanItemsByLoanId = async (loanId: string) => {
+  return this.prisma.findByLoanId(loanId)
 }
 
-export const getLoanItemById = async (id: string) => {
-  const item = await loanItemRepo.findById(id)
+ getLoanItemById = async (id: string) => {
+  const item = await this.prisma.findById(id)
 
   if (!item) {
     throw new Error("Loan item tidak ditemukan")
   }
 
   return item 
+}
+
 }

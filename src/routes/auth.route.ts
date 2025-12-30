@@ -1,10 +1,86 @@
 import { Router } from "express"
 import * as authController from "../controllers/auth.controller"
+import { UserRepository } from "../repositories/user.repository"
+import prismaInstance from "../database"
+import { AuthService } from "../services/auth.service"
 
 const router = Router()
 
-router.post("/register", authController.register)
+const repo = new UserRepository(prismaInstance)
+const service = new AuthService(repo)
+const controller = new authController.AuthController(service)
 
-router.post("/login", authController.login)
+/**
+ * @swagger
+ * tags:
+ *   - name: Auth
+ *     description: Autentikasi dan otorisasi pengguna
+ */
+
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Registrasi user baru
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: silica
+ *               email:
+ *                 type: string
+ *                 example: silica@mail.com
+ *               password:
+ *                 type: string
+ *                 example: secret123
+ *     responses:
+ *       201:
+ *         description: User berhasil didaftarkan
+ *       400:
+ *         description: Data tidak valid / email sudah digunakan
+ */
+router.post("/register", controller.register);
+
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login user
+ *     tags:
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: silica@mail.com
+ *               password:
+ *                 type: string
+ *                 example: secret123
+ *     responses:
+ *       200:
+ *         description: Login berhasil
+ *       401:
+ *         description: Email atau password salah
+ */
+router.post("/login", controller.login);
 
 export default router

@@ -1,7 +1,12 @@
 import type { Request, Response } from "express";
-export declare const getCategories: (_req: Request, res: Response) => Promise<void>;
-export declare const getCategory: (req: Request, res: Response) => Promise<void>;
-export declare const createCategory: (req: Request, res: Response) => Promise<void>;
-export declare const updateCategory: (req: Request, res: Response) => Promise<void>;
-export declare const deleteCategory: (req: Request, res: Response) => Promise<void>;
+import * as categoryService from "../services/category.service";
+export declare class CategoryController {
+    private prisma;
+    constructor(prisma: categoryService.CategoryService);
+    getCategories: (_req: Request, res: Response) => Promise<void>;
+    getCategory: (req: Request, res: Response) => Promise<void>;
+    createCategory: (req: Request, res: Response) => Promise<void>;
+    updateCategory: (req: Request, res: Response) => Promise<void>;
+    deleteCategory: (req: Request, res: Response) => Promise<void>;
+}
 //# sourceMappingURL=category.controller.d.ts.map

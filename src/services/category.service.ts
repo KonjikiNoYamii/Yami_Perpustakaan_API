@@ -1,11 +1,17 @@
+import { Prisma } from "../generated"
 import * as categoryRepo from "../repositories/category.repository"
 
-export const getAllCategories = async () => {
-  return categoryRepo.findAll()
+export class CategoryService{
+constructor(private prisma:categoryRepo.CategoryRepository){
+
+}
+  
+   getAllCategories = async () => {
+  return this.prisma.findAll()
 }
 
-export const getCategoryById = async (id: string) => {
-  const category = await categoryRepo.findById(id)
+ getCategoryById = async (id: string) => {
+  const category = await this.prisma.findById(id)
 
   if (!category) {
     throw new Error("Category tidak ditemukan")
@@ -14,23 +20,25 @@ export const getCategoryById = async (id: string) => {
   return category
 }
 
-export const createCategory = async (nama: string) => {
-  const existing = await categoryRepo.findByName(nama)
+ createCategory = async (nama: string) => {
+  const existing = await this.prisma.findByName(nama)
 
   if (existing) {
     throw new Error("Category sudah ada")
   }
 
-  return categoryRepo.create({ nama })
+  return this.prisma.create({ nama })
 }
 
-export const updateCategory = async (
+ updateCategory = async (
   id: string,
-  nama: string
+  nama: Prisma.CategoryUpdateInput
 ) => {
-  return categoryRepo.update(id, { nama })
+  return this.prisma.update(id, nama)
 }
 
-export const deleteCategory = async (id: string) => {
-  return categoryRepo.softDelete(id)
+ deleteCategory = async (id: string) => {
+  return this.prisma.softDelete(id)
+}
+
 }

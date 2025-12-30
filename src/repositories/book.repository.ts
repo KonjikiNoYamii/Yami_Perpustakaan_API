@@ -1,70 +1,101 @@
-import type { Prisma } from "../generated/client";
-import type { BookCreateInput, BookUpdateInput } from "../generated/models";
-import { getPrisma } from "../prisma";
+import type { Book, Prisma, PrismaClient } from "../generated";
 
-const prisma = getPrisma()
 
-export const findAll = async(skip:number,take:number, where:Prisma.BookWhereInput,orderBy:Prisma.BookOrderByWithRelationInput) =>{
-    return prisma.book.findMany({
-        skip,
-        take,
-        where,
-        orderBy,
-        include:{
-            category:true
-        }
+
+export class BookRepository{
+  constructor(private prisma: PrismaClient) {}
+
+  findAll = async (
+    skip: number,
+    take: number,
+    where: Prisma.BookWhereInput,
+    orderBy: Prisma.BookOrderByWithRelationInput
+  ): Promise<Book[]> => {
+    return this.prisma.book.findMany({
+      skip,
+      take,
+      where,
+      orderBy,
+      include: {
+        category: true,
+      },
+    });
+  };
+  countAll = async (where: Prisma.BookWhereInput) => {
+    return this.prisma.book.count({
+      where,
+    });
+  };
+
+  findById = async (id: string) => {
+    return this.prisma.book.findUnique({
+      where: {
+        id,
+        deletedAt: null,
+      },
+      include: {
+        category: true,
+      },
+    });
+  };
+
+  create = async (data: Prisma.BookCreateInput) => {
+    return this.prisma.book.create({
+      data,
+      include:{
+        category:true
+      }
+    });
+  };
+
+  update = async(id: string, data: Prisma.BookUpdateInput) => {
+    return this.prisma.book.update({
+      where: {
+        id,
+        deletedAt: null,
+      },
+      include: {
+        category: true,
+      },
+      data,
+    });
+  };
+
+  softDelete = async (id: string) => {
+    return this.prisma.book.update({
+      where: {
+        id,
+        deletedAt: null,
+      },
+      include: {
+        category: true,
+      },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+  };
+
+  getStats = async () =>{
+    return await this.prisma.book.aggregate({
+        _count:{id:true},
+        _avg:{harga:true},
+        _sum:{stok:true},
+        _min:{harga:true},
+        _max:{harga:true}
     })
-
-}
-export const countAll = (where:Prisma.BookWhereInput) =>{
-    return prisma.book.count({
-        where
+  }
+  
+  getBookByCategoryIdAndPublicationYear = async () =>{
+    return await this.prisma.book.groupBy({
+      by:['categoryId', 'tahunTerbit'],
+      _count:{id:true},
+      _avg:{harga:true},
+      _sum:{stok:true},
+      orderBy:[
+       { categoryId:'asc'},
+        {tahunTerbit:'asc'}]
+      
     })
-}
-
-export const findById = async(id:string) =>{
-    return prisma.book.findUnique({
-        where:{
-            id,
-            deletedAt:null
-        },
-        include:{
-            category:true
-        }
-    })
-}
-
-export const create = async(data:BookCreateInput) =>{
-    return prisma.book.create({
-        data
-    })
-}
-
-export const update = (id:string, data:BookUpdateInput) =>{
-    return prisma.book.update({
-        where:{
-            id,
-            deletedAt:null
-        },
-        include:{
-            category:true
-        },
-        data
-
-    })
-}
-
-export const softDelete = async(id:string) =>{
-    return prisma.book.update({
-        where:{
-            id,
-            deletedAt:null
-        },
-        include:{
-            category:true
-        },
-        data:{
-            deletedAt:new Date()
-        },
-    })
+  }
 }

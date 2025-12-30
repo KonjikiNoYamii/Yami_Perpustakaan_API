@@ -2,14 +2,19 @@ import type { Request, Response } from "express"
 import * as adminService from "../services/admin.service"
 import { successResponse } from "../utils/response"
 
-export const createAdmin = async (req: Request, res: Response) => {
-  const { nama, email, password, kota } = req.body
+export class AdminController{
+  constructor(private prisma:adminService.AdminService){
 
-  const admin = await adminService.createAdmin({
-    nama,
-    email,
-    password,
-    kota
+  }
+  
+ createAdmin = async (req: Request, res: Response) => {
+    const { nama, email, password, kota } = req.body
+    
+    const admin = await this.prisma.createAdmin({
+      nama,
+      email,
+      password,
+      kota
   })
 
   return successResponse(
@@ -19,4 +24,6 @@ export const createAdmin = async (req: Request, res: Response) => {
     null,
     201
   )
+}
+
 }

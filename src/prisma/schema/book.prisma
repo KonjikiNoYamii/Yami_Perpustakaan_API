@@ -1,17 +1,28 @@
 model Book {
-  id          String   @id @default(uuid())
-  nama        String
-  harga       Int
-  deskripsi   String
-  stok        Int
-  coverUrl    String?
+  id            String   @id @default(uuid())
 
-  categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
+  // Informasi utama buku
+  nama          String
+  deskripsi     String
+  harga         Int
+  stok          Int
+  coverUrl      String?
 
-  loanItems   LoanItem[] // ⬅️ RELASI MANY-TO-MANY
+  // 📅 Properti untuk evaluasi (PENTING)
+  tahunTerbit   Int      // ← untuk filter rentang tahun
+  penulis       String
+  penerbit      String
+  isbn          String?  @unique
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  deletedAt   DateTime?
+  // Relasi kategori
+  categoryId    String
+  category      Category @relation(fields: [categoryId], references: [id])
+
+  // Relasi peminjaman
+  loanItems     LoanItem[]
+
+  // Metadata
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  deletedAt     DateTime?
 }

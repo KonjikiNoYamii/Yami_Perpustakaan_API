@@ -1,53 +1,72 @@
-import { getPrisma } from "../prisma";
-const prisma = getPrisma();
-export const findAll = (where) => {
-    return prisma.loan.findMany({
-        where,
-        include: {
-            user: true,
-            items: {
-                include: {
-                    book: true
-                }
-            }
-        },
-        orderBy: {
-            createdAt: "desc"
-        }
-    });
-};
-export const findById = (id) => {
-    return prisma.loan.findFirst({
-        where: {
-            id,
-            deletedAt: null
-        },
-        include: {
-            user: true,
-            items: {
-                include: {
-                    book: true
-                }
-            }
-        }
-    });
-};
-export const create = (data) => {
-    return prisma.loan.create({
-        data,
-        include: {
-            items: {
-                include: {
-                    book: true
-                }
-            }
-        }
-    });
-};
-export const update = (id, data) => {
-    return prisma.loan.update({
-        where: { id },
-        data
-    });
-};
+export class LoanRepository {
+    prisma;
+    constructor(prisma) {
+        this.prisma = prisma;
+    }
+    async findBooksForCheckout(bookIds, tx) {
+        return tx.book.findMany({
+            where: {
+                deletedAt: null,
+                id: { in: bookIds },
+            },
+            select: {
+                id: true,
+                stok: true,
+                nama: true,
+            },
+        });
+    }
+    async decrementStock(bookId, qty, tx) {
+        await tx.book.update({
+            where: { id: bookId },
+            data: {
+                stok: { decrement: qty },
+            },
+        });
+    }
+    async createLoanWithItems(data, tx) {
+        return tx.loan.create({
+            data,
+            include: {
+                user: true,
+                items: {
+                    include: { book: true },
+                },
+            },
+        });
+    }
+    async findAll(skip, take, where, orderBy) {
+        return this.prisma.loan.findMany({
+            skip,
+            take,
+            where,
+            orderBy,
+            include: {
+                user: true,
+                items: { include: { book: true } },
+            },
+        });
+    }
+    async countAll(where) {
+        return this.prisma.loan.count({ where });
+    }
+    async findById(id) {
+        return this.prisma.loan.findUnique({
+            where: { id },
+            include: {
+                user: true,
+                items: { include: { book: true } },
+            },
+        });
+    }
+    async returnLoan(id, tx) {
+        return tx.loan.update({
+            where: { id },
+            data: {
+                status: "RETURNED",
+                tanggalKembali: new Date(),
+            },
+        });
+    }
+}
 //# sourceMappingURL=loan.repository.js.map

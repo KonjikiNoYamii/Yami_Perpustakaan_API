@@ -1,4 +1,9 @@
 import type { Request, Response } from "express";
-export declare const getLoanItems: (req: Request, res: Response) => Promise<void>;
-export declare const getLoanItem: (req: Request, res: Response) => Promise<void>;
+import * as loanItemService from "../services/loanItems.service";
+export declare class LoanItemController {
+    private prisma;
+    constructor(prisma: loanItemService.LoanItemService);
+    getLoanItems: (req: Request, res: Response) => Promise<void>;
+    getLoanItem: (req: Request, res: Response) => Promise<void>;
+}
 //# sourceMappingURL=loanItem.controller.d.ts.map

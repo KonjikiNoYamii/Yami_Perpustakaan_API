@@ -1,63 +1,60 @@
-import type { Prisma } from "../generated/client";
-export declare const findByEmail: (email: string) => Prisma.Prisma__UserClient<{
-    id: string;
-    nama: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-    email: string;
-    password: string;
-    kota: string;
-    role: string;
-} | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
-    omit: Prisma.GlobalOmitConfig | undefined;
-}>;
-export declare const findById: (id: string) => Prisma.Prisma__UserClient<{
-    id: string;
-    nama: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-    email: string;
-    password: string;
-    kota: string;
-    role: string;
-} | null, null, import("@prisma/client/runtime/client").DefaultArgs, {
-    omit: Prisma.GlobalOmitConfig | undefined;
-}>;
-export declare const findAll: (skip: number, take: number, where: Prisma.UserWhereInput) => Prisma.PrismaPromise<{
-    id: string;
-    nama: string;
-    createdAt: Date;
-    email: string;
-    kota: string;
-    role: string;
-}[]>;
-export declare const countAll: (where: Prisma.UserWhereInput) => Prisma.PrismaPromise<number>;
-export declare const create: (data: Prisma.UserCreateInput) => Prisma.Prisma__UserClient<{
-    id: string;
-    nama: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-    email: string;
-    password: string;
-    kota: string;
-    role: string;
-}, never, import("@prisma/client/runtime/client").DefaultArgs, {
-    omit: Prisma.GlobalOmitConfig | undefined;
-}>;
-export declare const softDelete: (id: string) => Prisma.Prisma__UserClient<{
-    id: string;
-    nama: string;
-    createdAt: Date;
-    updatedAt: Date;
-    deletedAt: Date | null;
-    email: string;
-    password: string;
-    kota: string;
-    role: string;
-}, never, import("@prisma/client/runtime/client").DefaultArgs, {
-    omit: Prisma.GlobalOmitConfig | undefined;
-}>;
+import type { Prisma, PrismaClient } from "../generated/client";
+export declare class UserRepository {
+    private prisma;
+    constructor(prisma: PrismaClient);
+    findByEmail: (email: string) => Promise<{
+        id: string;
+        nama: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+        email: string;
+        password: string;
+        kota: string;
+        role: string;
+    } | null>;
+    findById: (id: string) => Promise<{
+        id: string;
+        nama: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+        email: string;
+        password: string;
+        kota: string;
+        role: string;
+    } | null>;
+    findAll: (skip: number, take: number, where: Prisma.UserWhereInput) => Promise<{
+        id: string;
+        nama: string;
+        createdAt: Date;
+        email: string;
+        password: string;
+        kota: string;
+        role: string;
+    }[]>;
+    countAll: (where: Prisma.UserWhereInput) => Promise<number>;
+    create: (data: Prisma.UserCreateInput) => Promise<{
+        id: string;
+        nama: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+        email: string;
+        password: string;
+        kota: string;
+        role: string;
+    }>;
+    softDelete: (id: string) => Promise<{
+        id: string;
+        nama: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+        email: string;
+        password: string;
+        kota: string;
+        role: string;
+    }>;
+}
 //# sourceMappingURL=user.repository.d.ts.map

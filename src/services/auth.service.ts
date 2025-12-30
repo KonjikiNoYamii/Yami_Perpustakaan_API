@@ -8,6 +8,7 @@ interface RegisterInput {
   email: string
   password: string
   kota: string
+  role:"MEMBER"|"ADMIN"
 }
 
 interface LoginInput {
@@ -15,23 +16,26 @@ interface LoginInput {
   password: string
 }
 
-export const register = async (data: RegisterInput) => {
-  const existing = await userRepo.findByEmail(data.email)
+export class AuthService {
+  constructor(private prisma:userRepo.UserRepository){}
+  
+  register = async (data: RegisterInput) => {
+  const existing = await this.prisma.findByEmail(data.email)
   if (existing) throw new Error("Email sudah terdaftar")
 
   const hashed = await bcrypt.hash(data.password, 10)
 
-  return userRepo.create({
+  return this.prisma.create({
     nama: data.nama,
     email: data.email,
     password: hashed,
     kota: data.kota,
-    role: "MEMBER"
+    role: data.role
   })
 }
 
-export const login = async (data: LoginInput) => {
-  const user = await userRepo.findByEmail(data.email)
+login = async (data: LoginInput) => {
+  const user = await this.prisma.findByEmail(data.email)
   if (!user) throw new Error("Email atau password salah")
 
   const valid = await bcrypt.compare(data.password, user.password)
@@ -52,4 +56,6 @@ export const login = async (data: LoginInput) => {
       role: user.role
     }
   }
+}
+
 }

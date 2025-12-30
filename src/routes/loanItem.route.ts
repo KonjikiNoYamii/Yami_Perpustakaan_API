@@ -3,24 +3,86 @@ import * as loanItemController from "../controllers/loanItem.controller"
 import { authenticate, adminOnly } from "../middlewares/auth.middleware"
 import { validate } from "../utils/validation"
 import { loanIdParamValidation, loanItemIdValidation } from "../validations/loanItem.validation"
+import { loanItemRepository } from "../repositories/loanItem.repository"
+import prismaInstance from "../database"
+import { LoanItemService } from "../services/loanItems.service"
 
 const router = Router()
 
-// MEMBER & ADMIN
+const repo = new loanItemRepository(prismaInstance)
+const service = new LoanItemService(repo)
+const controller = new loanItemController.LoanItemController(service)
+
+/**
+ * @swagger
+ * tags:
+ *   - name: LoanItem
+ *     description: Detail item peminjaman buku
+ */
+
+/**
+ * @swagger
+ * /api/loan-items/loan/{loanId}:
+ *   get:
+ *     summary: Ambil semua item berdasarkan ID peminjaman
+ *     tags:
+ *       - LoanItem
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: loanId
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         example: "00d626a8-b0c3-4338-8de4-3e8b8421fdd7"
+ *     responses:
+ *       200:
+ *         description: Daftar item peminjaman berhasil diambil
+ *       401:
+ *         description: Tidak terautentikasi
+ *       404:
+ *         description: Data peminjaman tidak ditemukan
+ */
 router.get(
   "/loan/:loanId",
   authenticate,
   validate(loanIdParamValidation),
-  loanItemController.getLoanItems
-)
+  controller.getLoanItems
+);
 
-// ADMIN ONLY
+/**
+ * @swagger
+ * /api/loan-items/{id}:
+ *   get:
+ *     summary: Ambil detail satu item peminjaman
+ *     tags:
+ *       - LoanItem
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *         example: "c2f4b5a1-aaaa-bbbb-cccc-123456789abc"
+ *     responses:
+ *       200:
+ *         description: Detail item peminjaman ditemukan
+ *       403:
+ *         description: Akses ditolak (bukan admin)
+ *       404:
+ *         description: Item peminjaman tidak ditemukan
+ */
 router.get(
   "/:id",
   authenticate,
   adminOnly,
   validate(loanItemIdValidation),
-  loanItemController.getLoanItem
-)
+  controller.getLoanItem
+);
 
 export default router

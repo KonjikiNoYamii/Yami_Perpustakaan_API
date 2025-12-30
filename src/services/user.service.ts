@@ -1,21 +1,24 @@
 import * as userRepo from "../repositories/user.repository"
 import type { Prisma } from "../generated/client"
 
-export const getUserById = async (id: string) => {
-  const user = await userRepo.findById(id)
+export class UserService {
+  constructor(private prisma:userRepo.UserRepository){}
+  
+  getUserById = async (id: string) => {
+  const user = await this.prisma.findById(id)
   if (!user) throw new Error("User tidak ditemukan")
   return user
 }
 
-export const getAllUsers = async (page: number, limit: number) => {
+ getAllUsers = async (page: number, limit: number) => {
   const skip = (page - 1) * limit
 
   const where: Prisma.UserWhereInput = {
     deletedAt: null
   }
 
-  const users = await userRepo.findAll(skip, limit, where)
-  const total = await userRepo.countAll(where)
+  const users = await this.prisma.findAll(skip, limit, where)
+  const total = await this.prisma.countAll(where)
 
   return {
     users,
@@ -25,7 +28,8 @@ export const getAllUsers = async (page: number, limit: number) => {
   }
 }
 
-export const deleteUser = async (id: string) => {
-  await getUserById(id)
-  return userRepo.softDelete(id)
+ deleteUser = async (id: string) => {
+  return await this.prisma.softDelete(id)
+}
+
 }

@@ -1,4 +1,3 @@
-import {} from "express";
 export const successResponse = (res, message, data = null, pagination = null, statusCode = 200) => {
     const response = {
         success: true,

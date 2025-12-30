@@ -12,6 +12,9 @@ import loanItemRouter from './routes/loanItem.route'
 import authRouter from './routes/auth.route'
 import adminRouter from './routes/admin.route'
 import { requestLogger } from "./middlewares/logger.middleware";
+import swaggerUi from 'swagger-ui-express'
+import swaggerSpec from "./utils/swagger";
+
 
 
 const app: Application = Express()
@@ -22,6 +25,7 @@ app.use(cors())
 app.use(Express.json());
 app.set('query parser', 'extended')
 app.use(Express.static("public"))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 app.use(requestLogger);
 
@@ -38,7 +42,7 @@ app.use('/api/auth',authRouter)
 
 app.use('/api/admin',adminRouter)
 
-app.use('/api/books',booksRouter)
+app.use('/api/book',booksRouter)
 
 app.use('/api/users', userRouter)
 
@@ -46,7 +50,7 @@ app.use('/api/category',categoryRouter)
 
 app.use('/api/loan',loanRouter)
 
-app.use('/api/loanItem',loanItemRouter)
+app.use('/api/loan-items',loanItemRouter)
 
 
 app.use(/.*/, (req: Request, _res: Response) => {
