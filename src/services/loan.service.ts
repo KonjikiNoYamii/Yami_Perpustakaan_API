@@ -1,4 +1,4 @@
-import type { PrismaClient, Prisma, Loan } from "../../dist/generated/client";
+import type { PrismaClient, Prisma, Loan } from "@prisma/client";
 import type { ILoanRepository } from "../repositories/loan.repository";
 
 export interface CreateLoanInput {

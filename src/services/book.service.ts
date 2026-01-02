@@ -1,4 +1,4 @@
-import type { Prisma, Book } from "../../dist/generated/client";
+import type { Prisma, Book } from "@prisma/client";
 import * as BookRepo from "../repositories/book.repository";
 
 interface FindAllBooksParams {
@@ -72,11 +72,10 @@ export class BookService implements IBookService {
     };
 
     if (Array.isArray(search?.categoryIds) && search.categoryIds.length > 0) {
-  whereClause.categoryId = {
-    in: search.categoryIds,
-  };
-}
-
+      whereClause.categoryId = {
+        in: search.categoryIds,
+      };
+    }
 
     if (search?.categoryIds?.length) {
       whereClause.categoryId = {
