@@ -9,16 +9,6 @@ export class BookService {
         const whereClause = {
             deletedAt: null,
         };
-        if (Array.isArray(search?.categoryIds) && search.categoryIds.length > 0) {
-            whereClause.categoryId = {
-                in: search.categoryIds,
-            };
-        }
-        if (search?.categoryIds?.length) {
-            whereClause.categoryId = {
-                in: search.categoryIds,
-            };
-        }
         if (search?.available === true) {
             whereClause.stok = { gt: 0 };
         }
