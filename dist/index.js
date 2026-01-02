@@ -1,3 +1,4 @@
+import "dotenv/config"; // ⬅️ WAJIB BARIS PERTAMA
 import app from "./app.js";
 import config from "./utils/env.js";
 app.listen(config.PORT, () => {
