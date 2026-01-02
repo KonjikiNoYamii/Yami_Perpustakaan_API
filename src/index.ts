@@ -1,4 +1,4 @@
-import "dotenv/config"; // ⬅️ WAJIB BARIS PERTAMA
+import "dotenv/config"; 
 import app from "./app";
 import config from './utils/env'
 
