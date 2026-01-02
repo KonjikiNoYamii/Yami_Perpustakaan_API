@@ -4,7 +4,7 @@ import app from "../app.js";
 import jwt from "jsonwebtoken";
 import config from "../utils/env.js";
 // UUID contoh
-const testBookUUID = "00d626a8-b0c3-4338-8de4-3e8b8421fdd7";
+const testBookUUID = "27a2bcb5-68a1-4e63-9b73-0a3f7c4bf6d0";
 const invalidUUID = "00000000-0000-0000-0000-000000000000";
 const AdminToken = jwt.sign({ id: "89aa195b-4c85-47b5-bba3-070ee0764ff3", role: "ADMIN" }, config.JWT_SECRET);
 // Token member/user

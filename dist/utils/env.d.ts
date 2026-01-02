@@ -1,6 +1,6 @@
 declare const _default: {
     readonly HOST: string | undefined;
-    readonly PORT: string | undefined;
+    readonly PORT: string | 3000;
     readonly NODE: string | undefined;
     readonly DATABASE_URL: string | undefined;
     readonly JWT_SECRET: string;
