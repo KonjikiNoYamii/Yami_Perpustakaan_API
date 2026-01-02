@@ -4,7 +4,7 @@ export declare class loanItemRepository {
   constructor(prisma: PrismaClient);
   findByLoanId: (
     loanId: string
-  ) => import("../../dist/generated/index.js").Prisma.PrismaPromise<
+  ) => import("@prisma/client/index.js").Prisma.PrismaPromise<
     ({
       book: {
         category: {
@@ -39,7 +39,7 @@ export declare class loanItemRepository {
   >;
   findById: (
     id: string
-  ) => import("../../dist/generated/index.js").Prisma.Prisma__LoanItemClient<
+  ) => import("@prisma/client/index.js").Prisma.Prisma__LoanItemClient<
     | ({
         book: {
           category: {
@@ -95,8 +95,8 @@ export declare class loanItemRepository {
       })
     | null,
     null,
-    import("../../dist/generated/runtime/client.js").DefaultArgs,
-    import("../../dist/generated/index.js").Prisma.PrismaClientOptions
+    import("@prisma/client/runtime/client.js").DefaultArgs,
+    import("@prisma/client/index.js").Prisma.PrismaClientOptions
   >;
 }
 //# sourceMappingURL=loanItem.repository.d.ts.map

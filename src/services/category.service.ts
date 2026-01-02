@@ -1,4 +1,4 @@
-import { Prisma } from "../../dist/generated";
+import { Prisma } from "@prisma/client";
 import * as categoryRepo from "../repositories/category.repository";
 
 export class CategoryService {

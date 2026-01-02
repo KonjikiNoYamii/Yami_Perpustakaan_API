@@ -21,7 +21,7 @@ export declare class CategoryRepository implements ICategoryRepository {
       deletedAt: Date | null;
     } | null,
     null,
-    import("../../dist/generated/runtime/client.js").DefaultArgs,
+    import("@prisma/client/runtime/client.js").DefaultArgs,
     Prisma.PrismaClientOptions
   >;
   findByName: (nama: string) => Prisma.Prisma__CategoryClient<
@@ -33,7 +33,7 @@ export declare class CategoryRepository implements ICategoryRepository {
       deletedAt: Date | null;
     } | null,
     null,
-    import("../../dist/generated/runtime/client.js").DefaultArgs,
+    import("@prisma/client/runtime/client.js").DefaultArgs,
     Prisma.PrismaClientOptions
   >;
   create: (data: Prisma.CategoryCreateInput) => Prisma.Prisma__CategoryClient<
@@ -45,7 +45,7 @@ export declare class CategoryRepository implements ICategoryRepository {
       deletedAt: Date | null;
     },
     never,
-    import("../../dist/generated/runtime/client.js").DefaultArgs,
+    import("@prisma/client/runtime/client.js").DefaultArgs,
     Prisma.PrismaClientOptions
   >;
   update: (
@@ -60,7 +60,7 @@ export declare class CategoryRepository implements ICategoryRepository {
       deletedAt: Date | null;
     },
     never,
-    import("../../dist/generated/runtime/client.js").DefaultArgs,
+    import("@prisma/client/runtime/client.js").DefaultArgs,
     Prisma.PrismaClientOptions
   >;
   softDelete: (id: string) => Prisma.Prisma__CategoryClient<
@@ -72,7 +72,7 @@ export declare class CategoryRepository implements ICategoryRepository {
       deletedAt: Date | null;
     },
     never,
-    import("../../dist/generated/runtime/client.js").DefaultArgs,
+    import("@prisma/client/runtime/client.js").DefaultArgs,
     Prisma.PrismaClientOptions
   >;
 }
