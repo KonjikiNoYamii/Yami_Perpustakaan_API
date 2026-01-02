@@ -71,6 +71,13 @@ export class BookService implements IBookService {
       deletedAt: null,
     };
 
+    if (Array.isArray(search?.categoryIds) && search.categoryIds.length > 0) {
+  whereClause.categoryId = {
+    in: search.categoryIds,
+  };
+}
+
+
     if (search?.categoryIds?.length) {
       whereClause.categoryId = {
         in: search.categoryIds,
