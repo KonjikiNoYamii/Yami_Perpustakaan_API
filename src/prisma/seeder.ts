@@ -10,7 +10,11 @@ async function main() {
   await prisma.loan.deleteMany();
   await prisma.book.deleteMany();
   await prisma.category.deleteMany();
-  await prisma.user.deleteMany();
+  await prisma.user.deleteMany({
+    where:{
+      email:"KonjikiNoYami94326123@gmail.com"
+    }
+  });
 
   console.log("🧹 Existing data cleaned");
 
