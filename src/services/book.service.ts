@@ -1,4 +1,4 @@
-import type { Prisma, Book } from "@prisma/client";
+import { Book, Prisma } from "../../dist/generated";
 import * as BookRepo from "../repositories/book.repository";
 
 interface FindAllBooksParams {
@@ -70,7 +70,6 @@ export class BookService implements IBookService {
     const whereClause: Prisma.BookWhereInput = {
       deletedAt: null,
     };
-
 
     if (search?.available === true) {
       whereClause.stok = { gt: 0 };

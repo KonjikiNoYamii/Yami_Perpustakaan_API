@@ -4,9 +4,9 @@ const option = {
     definition: {
         openapi: "3.0.0",
         info: {
-            title: "PERPUSTAKAAN API YAMI",
+            title: "YAMI PERPUSTAKAAN API",
             version: "1.0.0",
-            description: "Dokumnetasi Lengkap Perpustakaan Api",
+            description: "Dokumentasi Perpustakaan",
             contact: {
                 name: "Backend developer"
             },
@@ -14,7 +14,7 @@ const option = {
         servers: [
             {
                 url: `http://${config.HOST}:${config.PORT}`,
-                description: "Development"
+                description: "Production"
             }
         ],
         components: {

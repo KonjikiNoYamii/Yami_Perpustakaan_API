@@ -1,7 +1,6 @@
-import { getPrisma } from "../database.js";
 import { faker } from "@faker-js/faker";
 import bcrypt from "bcrypt";
-const prisma = getPrisma();
+import prisma from "../database.js";
 async function main() {
     console.log("\uD83C\uDF31 Starting library database seeding...");
     // 🧹 CLEAN DATA (urut sesuai relasi)

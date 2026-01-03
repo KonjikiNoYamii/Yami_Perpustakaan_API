@@ -1,4 +1,4 @@
-import type { Prisma, PrismaClient, Loan, User, LoanItem, Book } from "@prisma/client";
+import type { Prisma, PrismaClient, Loan, User, LoanItem, Book } from "../../dist/generated/index.js";
 export type LoanWithItems = Loan & {
     user: User;
     items: (LoanItem & {

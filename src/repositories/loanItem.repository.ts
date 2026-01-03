@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../dist/generated";
 
 export class loanItemRepository {
   constructor(private prisma: PrismaClient) {}

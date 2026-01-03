@@ -1,5 +1,5 @@
 import * as userRepo from "../repositories/user.repository";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "../../dist/generated";
 
 export class UserService {
   constructor(private prisma: userRepo.UserRepository) {}

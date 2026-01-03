@@ -1,4 +1,4 @@
-import type { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "../../dist/generated";
 
 export interface ICategoryRepository {}
 

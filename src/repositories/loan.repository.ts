@@ -5,7 +5,7 @@ import type {
   User,
   LoanItem,
   Book,
-} from "@prisma/client";
+} from "../../dist/generated";
 
 export type LoanWithItems = Loan & {
   user: User;

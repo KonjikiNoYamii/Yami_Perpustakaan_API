@@ -1,4 +1,4 @@
-import type { Prisma, Book } from "@prisma/client";
+import { Book, Prisma } from "../../dist/generated/index.js";
 import * as BookRepo from "../repositories/book.repository.js";
 interface FindAllBooksParams {
     page: number;
