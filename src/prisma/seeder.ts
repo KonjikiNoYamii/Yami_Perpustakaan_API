@@ -12,7 +12,7 @@ async function main() {
   await prisma.category.deleteMany();
   await prisma.user.deleteMany({
     where:{
-      email:"KonjikiNoYami94326123@gmail.com"
+      email:{not:"KonjikiNoYami94326123@gmail.com"}
     }
   });
 
