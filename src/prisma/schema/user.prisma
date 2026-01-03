@@ -4,7 +4,7 @@ model User {
   email     String   @unique
   password  String
   kota      String
-  role      String
+  role      String   @default("MEMBER")
 
   loans     Loan[]
 
